@@ -1,4 +1,4 @@
-# 🍕 PizzaRP – Pizzeria Reference Project (Console)
+# ✔️ E-life(e) – Habit Tracker
 
 > 🚧 This is a template repository for student project in the course Programming Foundations at FHNW, BSc BIT.  
 > 🚧 Do not keep this section in your final submission.
@@ -14,25 +14,25 @@ This project is intended to:
 - Work only within your own copy — do not push to the original template.  
 - Commit regularly to track your progress.
 
-# 🍕 TEMPLATE for documentation
+# ✔️ TEMPLATE for documentation
 > 🚧 Please remove this paragraphs having "🚧". These are comments for preparing the documentations.
 ## 📝 Analysis
 
 **Problem**
 > 🚧 Describe the real-world problem your application solves. (Not HOW, but WHAT)
 
-💡 Example: In a small local pizzeria, the staff writes orders and calculates totals by hand. This causes mistakes and inconsistent orders or discounts.
+💡 In a busy life style, the users don't have much time to track their in the making daily habits. This causes them not having an overview on their daily habit goals.
 
 **Scenario**
 > 🚧 Describe when and how a user will use your application
 
-💡 Example: PizzaRP solves the part of the problem where orders and totals are created by letting a user select items from a menu and automatically generating a correct invoice.
+💡  E-life(e) helps in the part of the problem where users, by answering quick and easy questions on their habits, automatically generate a daily/weekly clear overview..
 
 **User stories:**
-1. As a user, I want to see the pizza menu in the console.
-2. As a user, I want to select pizzas and see the running total.
-3. As a user, I want discounts to be applied automatically.
-4. As a user, I want an invoice to be created and saved as a file.
+1. As a user, I want to track my daily habits.
+2. As a user, I want to select options for answers.
+3. As a user, I want to be reminded of my goals
+4. As a user, As a user, I want an overview to be created and saved.
 
 **Use cases:**
 - Show Menu (from `menu.txt`)
@@ -57,15 +57,14 @@ Each app must meet the following three criteria in order to be accepted (see als
 > 🚧 In this section, document how your project fulfills each criterion.  
 ---
 The application interacts with the user via the console. Users can:
-- View the pizza menu
-- Select pizzas and quantities
-- See the running total
-- Receive an invoice generated as a file
+- View all the habits 
+- Select habit and answer the question 
+- See the results of each habit - Receive a daily/weekly overview of the habits
 
 ---
 
 
-### 2. Data Validation
+### 2. Data Validation - to be done later
 
 The application validates all user input to ensure data integrity and a smooth user experience. This is implemented in `main-invoice.py` as follows:
 
@@ -98,7 +97,7 @@ These checks prevent crashes and guide the user to provide correct input, matchi
 ---
 
 
-### 3. File Processing
+### 3. File Processing - to be done later
 
 The application reads and writes data using files:
 
@@ -132,6 +131,7 @@ The application reads and writes data using files:
 ### Technology
 - Python 3.x
 - Environment: GitHub Codespaces
+- OpenAI
 - No external libraries
 
 ### 📂 Repository Structure
@@ -165,11 +165,11 @@ These libraries are part of the Python standard library, so no external installa
 
 > 🚧 Fill in the names of all team members and describe their individual contributions below. Each student should be responsible for at least one part of the project.
 
-| Name       | Contribution                                 |
-|------------|----------------------------------------------|
-| Student A  | Menu reading (file input) and displaying menu|
-| Student B  | Order logic and data validation              |
-| Student C  | Invoice generation (file output) and slides  |
+| Name       	   | Contribution                                 |
+|------------------|----------------------------------------------|
+| da Costa Inês    | Menu reading (file input) and displaying menu|
+| Haefliger Sarah  | Order logic and data validation              |
+| Jegge Lara 	   | Invoice generation (file output) and slides  |
 
 
 ## 🤝 Contributing
