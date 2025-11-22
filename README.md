@@ -185,12 +185,12 @@ The application reads and writes data using files:
 
 ### 📂 Repository Structure
 	```text
-	E-lif(e)/
-	├── main.py              # main program logic (console interaction)
-	├── weekly_data.txt      # input/output storage of daily entries
-	├── report.txt           # generated weekly advice report
-	├── docs/                # documentation and screenshots
-	└── README.md            # project overview
+	e_life_project/
+├─ main.py              # main entry point (this file)
+├─ summary_logic.py     # Lara + helpers from Inês, calls storage from Sarah
+├─ storage_csv.py       # Sarah's CSV module
+├─ analysis_csv.py      # optional: simple CSV stats
+└─ wellness_data.csv    # created automatically after first run
 ```
 
 ### How to Run
