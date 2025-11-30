@@ -185,12 +185,12 @@ The application reads and writes data using files:
 
 ### 📂 Repository Structure
 	```text
-	E-lif(e)/
-	├── main.py              # main program logic (console interaction)
-	├── weekly_data.txt      # input/output storage of daily entries
-	├── report.txt           # generated weekly advice report
-	├── docs/                # documentation and screenshots
-	└── README.md            # project overview
+	e_life_project/
+├─ main.py              # main entry point (this file)
+├─ summary_logic.py     # Lara + helpers from Inês, calls storage from Sarah
+├─ storage_csv.py       # Sarah's CSV module
+├─ analysis_csv.py      # optional: simple CSV stats
+└─ wellness_data.csv    # created automatically after first run
 ```
 
 ### How to Run
@@ -222,8 +222,39 @@ These libraries are part of the Python standard library, so no external installa
 | da Costa Inês    | Menu reading (file input) and displaying menu|
 | Haefliger Sarah  | Order logic and data validation              |
 | Jegge Lara 	   | Invoice generation (file output) and slides  |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+1️⃣ Who did what (for your documentation)
+You can copy-paste and adjust names if you like:
+Team Roles & Responsibilities
+Inês – Input & Validation
+Designed and implemented the user input flow for the daily tracker.
+Wrote reusable helper functions:
+ask_yes_no()
+ask_int_in_range()
+ask_non_negative_int()
+ask_non_negative_float()
+ask_choice()
+Integrated these helpers into the main e_life_tracker() function to avoid repeated code and make input validation beginner-friendly.
+Sarah – CSV Storage
+Created the file storage_csv.py to handle all CSV file operations.
+Defined the CSV structure via FIELDNAMES (including date, score, sleep, stress, etc.).
+Implemented:
+ensure_csv_exists() → creates wellness_data.csv with a header row.
+append_entry(entry_dict) → appends one validated daily entry as a row.
+Helped design build_entry_dict() in summary_logic.py so daily tracker results are saved correctly.
+Lara – Summary & Logic
+Designed the wellness scoring logic and advice system in summary_logic.py.
+Implemented:
+fun_girly_message(score) → fun daily message based on score.
+generate_daily_summaries_girly(inputs) → text summaries per category (sleep, mood, water, etc.).
+generate_monthly_report_girly(month_data) → end-of-month “GirlyPop” style report using averages and mood stats.
+e_life_tracker() → collects one full day (using Inês’ helpers) and returns score, advice, summaries, and inputs.
+run_month() → loops over multiple days, calls e_life_tracker(), saves to CSV (Sarah’s part), and prints the monthly report.
+Bonus: Simple Analysis Script
+An extra file analysis_csv.py reads wellness_data.csv and prints basic statistics (average score, average stress, average steps, sleep counts).
 
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
 ## 🤝 Contributing
 
 > 🚧 This is a template repository for student projects.  
