@@ -179,5 +179,3 @@ def e_life_tracker():
         print("\n**No specific issues detected.** You had a well-balanced day! 😊")
 
 
-# Run the tracker function
-e_life_tracker()

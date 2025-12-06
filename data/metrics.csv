@@ -1,0 +1,9 @@
+timestamp,metric,value,units,context,comment
+2025-12-05T18:31:32.126988Z,sleep_duration,8.5,hours,daily_checkin,
+2025-12-05T18:31:48.097264Z,water_ml,2000.0,ml,daily_checkin,
+2025-12-05T18:31:51.284308Z,steps,5000,count,daily_checkin,
+2025-12-05T18:31:53.251390Z,mood,5,rating,daily_checkin,
+2025-12-05T18:33:14.681823Z,sleep_duration,8.0,hours,daily_checkin,
+2025-12-05T18:33:24.216018Z,water_ml,2000.0,ml,daily_checkin,
+2025-12-05T18:33:27.262869Z,steps,5000,count,daily_checkin,
+2025-12-05T18:33:29.240709Z,mood,5,rating,daily_checkin,
