@@ -38,16 +38,3 @@ def collect_session(user_id=""):
         saved += 1
 
     print(f"Thanks — saved {saved} item{'s' if saved != 1 else ''}.")
-
-python3 collect_metrics.py
-
-from collect_metrics import collect_metrics
-
-inputs = {
-    "sleep_duration": "7.5",
-    "water_ml": "1500",
-    "steps": "4200",
-    "mood": "4",
-}
-records = collect_metrics(user_inputs=inputs, save=True)
-print(records)  # list of dicts for each validated metric
