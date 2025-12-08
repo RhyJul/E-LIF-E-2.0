@@ -1,29 +1,3 @@
-"""
-E-Lif(e) Tracker - Daily Wellness & Habit Tracker
-===================================================
-
-SCENARIO:
-The E-lif(e) Tracker is designed for quick, end-of-day use. The user runs the
-application from the console, is prompted with quick questions about their day's habits,
-and, upon completion, automatically generates a clear status report with a personalized
-wellness score and actionable advice.
-
-USER STORIES:
-1. As a User, I want to track my daily habits by answering simple, quick questions 
-   in order to stay strong and healthy.
-2. As a User, I want to quickly add information about my lifestyle (nutrition, sport, sleep) 
-   in order to get decisive and valuable information for improvement.
-3. As a User, I want to receive a daily status report that gives personalized advice based 
-   on my input in order to keep me motivated.
-4. As a User, I want the history of my daily reports to be saved so I can view my progress 
-   over time in order to track my improvement and development.
-
-USE CASES:
-• Enter daily wellness data (sleep, stress, exercise, etc.) ✓
-• Validate each entry to prevent invalid input ✓
-• Save all inputs to a file (e.g., 'weekly_data.txt'). Saving inputs for 28 days ✓
-• Generate a weekly status report ('report.txt') with advice and summaries ✓
-"""
 
 import datetime
 import json
@@ -245,13 +219,95 @@ def save_weekly_report(data):
     print(f"✅ Report saved to {WEEKLY_REPORT_FILE}")
 
 # ==========================================
-# Monthly Report (Enhanced)
+# Generate Monthly Advice (Simple & Helpful)
+# ==========================================
+
+
+def generate_monthly_advice(averages):
+    """Generate simple, non-medical advice based on monthly metrics."""
+    advice_list = []
+
+    # Sleep advice
+    if averages.get("sleep", 0) < 2:
+        advice_list.append(
+            "💤 Your sleep quality seems low. Try to get to bed earlier and create a calm bedtime routine.")
+    elif averages.get("sleep", 0) >= 2.5:
+        advice_list.append(
+            "✨ Great sleep! Keep your consistent sleep schedule.")
+
+    # Stress advice
+    if averages.get("stress", 0) > 3.5:
+        advice_list.append(
+            "😌 High stress this month. Try taking short breaks, go for walks, or practice breathing exercises.")
+    elif averages.get("stress", 0) <= 2:
+        advice_list.append(
+            "🌟 Your stress levels are great! Keep doing what you're doing.")
+
+    # Exercise advice
+    if averages.get("exercise", 0) < 1.5:
+        advice_list.append(
+            "🏃 You could move more! Try a 20-minute walk or dance to your favorite songs.")
+    elif averages.get("exercise", 0) >= 1.8:
+        advice_list.append(
+            "💪 Awesome exercise habits! You're taking great care of yourself.")
+
+    # Water intake advice
+    if averages.get("water", 0) < 1.5:
+        advice_list.append(
+            "💧 Drink more water! Aim for 2-3 liters daily. Add some lemon or mint for flavor.")
+    elif averages.get("water", 0) >= 2.5:
+        advice_list.append(
+            "💙 Perfect hydration! You're doing amazing with your water intake.")
+
+    # Social life advice
+    if averages.get("friends", 0) < 1.5:
+        advice_list.append(
+            "👯 Try connecting with friends more. Even a quick call or text can boost your mood!")
+    elif averages.get("friends", 0) >= 1.8:
+        advice_list.append(
+            "🌈 Great social life! Keep nurturing those connections.")
+
+    # Hobbies advice
+    if averages.get("hobbies", 0) < 1.5:
+        advice_list.append(
+            "🎨 Make time for hobbies! Even 30 minutes of something you love can make a big difference.")
+    elif averages.get("hobbies", 0) >= 1.8:
+        advice_list.append(
+            "🎭 Love seeing you take time for hobbies! That's so important for your wellbeing.")
+
+    # Medication/health advice
+    if averages.get("meds", 0) < 1.5:
+        advice_list.append(
+            "💊 Don't forget your daily routine! Setting phone reminders can help.")
+    elif averages.get("meds", 0) >= 1.8:
+        advice_list.append("✅ Excellent consistency with your health routine!")
+
+    # Steps advice
+    if averages.get("steps", 0) < 1.5:
+        advice_list.append(
+            "👟 More movement needed! Try parking farther away or taking stairs instead of elevators.")
+    elif averages.get("steps", 0) >= 2.5:
+        advice_list.append("🚶 Fantastic activity levels! Keep it up!")
+
+    # Mood advice
+    if averages.get("mood", 0) < 2:
+        advice_list.append(
+            "💖 Your mood could use a boost. Try something that makes you smile—a favorite show, song, or snack!")
+    elif averages.get("mood", 0) >= 2.5:
+        advice_list.append(
+            "😊 Your mood is great! You've got positive energy this month.")
+
+    return advice_list
+
+
+# ==========================================
+# Monthly Report (Enhanced with Advice)
 # ==========================================
 
 
 def save_monthly_report(data):
     """
-    Generate comprehensive monthly report in JSON and TXT format.
+    Generate comprehensive monthly report in JSON and TXT format with personalized advice.
     """
     if not data:
         print("❌ No days logged this month 😭")
@@ -273,24 +329,56 @@ def save_monthly_report(data):
         "averages": averages
     }
 
+    # Generate advice
+    advice = generate_monthly_advice(averages)
+
     # Save JSON
     json_name = f"monthly_report_{today.year}_{today.month:02d}.json"
     json.dump(report, open(json_name, "w"), indent=4)
 
-    # Save TXT
+    # Save TXT with advice
     txt_name = f"monthly_report_{today.year}_{today.month:02d}.txt"
     with open(txt_name, "w", encoding="utf-8") as f:
         f.write("💗 MONTHLY GIRLYPOP WELLNESS REPORT 💗\n")
-        f.write("="*60 + "\n")
-        f.write(f"Month: {today.month}/{today.year}\n")
-        f.write(f"Days logged: {report['days_logged']}\n")
-        f.write(f"Total score: {report['total_score']}\n")
-        f.write(f"Average score: {report['average_score']:.1f}\n\n")
-        f.write("AVERAGES BY METRIC:\n")
+        f.write("="*70 + "\n\n")
+        f.write(f"📅 Month: {today.strftime('%B %Y')}\n")
+        f.write(f"📊 Days tracked: {report['days_logged']}\n")
+        f.write(f"📈 Total wellness score: {report['total_score']}\n")
+        f.write(f"⭐ Average daily score: {report['average_score']:.1f}/25\n\n")
+
+        f.write("─" * 70 + "\n")
+        f.write("MONTHLY METRICS BREAKDOWN:\n")
+        f.write("─" * 70 + "\n\n")
         for k, v in averages.items():
-            f.write(f"  • {k}: {v:.1f}\n")
+            f.write(f"  • {k.capitalize()}: {v:.1f}\n")
+
+        f.write("\n" + "─" * 70 + "\n")
+        f.write("💡 PERSONALIZED ADVICE FOR THIS MONTH:\n")
+        f.write("─" * 70 + "\n\n")
+        for idx, adv in enumerate(advice, 1):
+            f.write(f"{idx}. {adv}\n")
+
+        f.write("\n" + "="*70 + "\n")
+        f.write("🎯 SUMMARY:\n")
+        if report['average_score'] >= 20:
+            f.write("You had an EXCELLENT month! Your wellness habits are strong.\n")
+            f.write("Keep maintaining these positive routines! 🌟\n")
+        elif report['average_score'] >= 16:
+            f.write("You had a GOOD month! You're taking care of yourself well.\n")
+            f.write("Focus on areas that could use a little more attention. ✨\n")
+        elif report['average_score'] >= 12:
+            f.write("You had an OK month. There's room for improvement!\n")
+            f.write("Start with one small change and build from there. 💪\n")
+        else:
+            f.write(
+                "This month was challenging. Remember, progress over perfection!\n")
+            f.write("Pick ONE area to focus on next month. You've got this! 💖\n")
+        f.write("="*70 + "\n")
 
     print(f"\n✅ Reports saved!\n  📄 JSON: {json_name}\n  📋 TXT: {txt_name}")
+    print(f"\n📋 Preview of {txt_name}:")
+    with open(txt_name, "r", encoding="utf-8") as f:
+        print(f.read())
 
 # ==========================================
 # Main Program Flow
