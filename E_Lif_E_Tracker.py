@@ -107,15 +107,16 @@ def collect_daily_inputs():
 
 
 def classify_water():
-    """Classify water intake into levels."""
-    w = ask_number("Water (liters): ", 0, None, True)
+    """Classify water intake into levels with realistic limits."""
+    w = ask_number("Water (liters): ", 0, 10,
+                   True)  # Max 10 liters (realistic limit)
     return 1 if w < 1 else 2 if w <= 1.5 else 3
 
 
 def classify_steps():
-    """Classify daily steps into levels."""
-    s = ask_number("Steps: ", 0)
-    return 1 if s < 4000 else 2 if s < 10000 else 3
+    """Classify daily steps into levels with realistic limits."""
+    s = ask_number(
+        "Steps: ", 0, 50000)  # Max 50,000 steps (realistic limit for a day)
 
 # ==========================================
 # Wellness Score Calculation & Advice
