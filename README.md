@@ -1,8 +1,5 @@
 # ✔️ E-life(e) – Habit Tracker
 
-> 🚧 This is a template repository for student project in the course Programming Foundations at FHNW, BSc BIT.  
-> 🚧 Do not keep this section in your final submission.
-
 This project is intended to:
 
 - Practice the complete process from **problem analysis to implementation**
@@ -19,20 +16,22 @@ This project is intended to:
 ## 📝 Analysis
 
 **Problem**
-> 🚧 Describe the real-world problem your application solves. (Not HOW, but WHAT)
-
-💡 Example: In a busy lifestyle, individuals often lack a simple, consolidated way to track and assess their daily wellness habits (e.g., sleep, stress, water, exercise). This lack of immediate feedback makes it difficult to maintain awareness, identify patterns, and make necessary adjustments to achieve their health and habit goals.
+💡 In a busy lifestyle, individuals often lack a simple, consolidated way to track and assess their daily wellness habits (e.g., sleep, stress, water, exercise). This lack of immediate feedback makes it difficult to maintain awareness, identify patterns, and make necessary adjustments to achieve their health and habit goals. 
 
 **Scenario**
-> 🚧 Describe when and how a user will use your application
-
-💡 Example: The E-lif(e) Tracker is designed for quick, end-of-day use. The user runs the application from the console, is prompted with quick questions about their day's habits, and, upon completion, automatically generates a clear status report with a personalized wellness score and actionable advice. This provides an immediate, clear overview without complex setup or extensive data entry.
+💡 The E-lif(e) Tracker is designed for quick, end-of-day use. The user runs the application from the console, is prompted with quick questions about their day’s habits, and, upon completion, automatically generates a clear status report with a personalized wellness score and actionable advice. This provides an immediate, clear overview without complex setup or extensive data entry. 1 User will log her/his daily data’s into the program. 
 
 **User stories:**
-1. As a user, I want to track my daily habits by answering simple, quick questions.
-2. As a user, I want to select from predefined options (e.g., good/medium/bad) or input simple numeric values for answers.
-3. As a user, I want a daily status report that gives advice based on my input
-4. As a user, I want the history of my daily reports to be saved so I can view my progress over time.
+1. As a User, I want to track my daily habits by answering simple, quick questions in order to stay strong and healthy. 
+2. As a User, I want to quickly add information about my lifestyle (nutrition, sport, sleep) in order to get decisive and valuable information for improvement. 
+3. As a User, I want to receive a daily status report that gives personalized advice based on my input in order to keep me motivated. 
+4. As a User, I want the history of my daily reports to be saved so I can view my progress over time in order to track my improvement and development. 
+
+**Use cases:**
+1. Enter daily wellness data (sleep, stress, exercise, etc.) 
+2. Validate each entry to prevent invalid input
+3. Save all inputs to a file (e.g., ‘weekly_data.txt’). Saving inputs for 28 days 
+4. Generate a weekly status report (‘report.txt’) with advice and summaries 
 
 ---
 
@@ -48,7 +47,6 @@ Each app must meet the following three criteria in order to be accepted (see als
 
 ### 1. Interactive App (Console Input)
 
-> 🚧 In this section, document how your project fulfills each criterion.  
 ---
 The application interacts with the user via the console. Users can:
 - View all the habits 
@@ -60,9 +58,15 @@ The application interacts with the user via the console. Users can:
 
 ### 2. Data Validation 
 
+To ensure the application collects accurate and meaningful information, each user input is assigned to a specific category and validated using an appropriate data type. This structure helps maintain data integrity throughout the program and ensures users provide responses that match the expected format. Below is an overview of the input categories used in the application alongside their corresponding data types and validation rules: 
+
 The application validates all user input to ensure data integrity and a smooth user experience. This is implemented in `main-invoice.py` as follows:
 
 - **Stress level validation:** When the user enters their daily stress level, the program ensures that the input is a number between 1 and 5:
+Category: Daily stress measurement (1–5)
+Data type: Integer
+Validation: Must be a number between 1 and 5
+
 	```python
 	if not stress.isdigit() or not (1 <= int(stress) <= 5):
     	print("⚠️ Please enter a number between 1 and 5.")
@@ -70,6 +74,10 @@ The application validates all user input to ensure data integrity and a smooth u
 	```
 
 - **Sleep quality validation:** The user must choose from specific options (good, medium, bad):
+Category: Sleep rating
+Data type: String
+Validation: Must be one of: good, medium, bad
+
 	```python
 	if sleep_quality.lower() not in ["good", "medium", "bad"]:
     	print("⚠️ Invalid input. Please choose: good, medium, or bad.")
@@ -78,6 +86,10 @@ The application validates all user input to ensure data integrity and a smooth u
 	```
 
 - **Yes/No questions (friends, exercise, hobbies, medication):** For binary inputs, the program checks if the user enters only yes or no:
+Category: Social and health habits (friends, exercise, hobbies, medication)
+Data type: String
+Validation: Must be yes or no
+
 	```python
 	if answer.lower() not in ["yes", "no"]:
     	print("⚠️ Please enter 'yes' or 'no'.")
@@ -85,7 +97,11 @@ The application validates all user input to ensure data integrity and a smooth u
 
 	```
 
-- **YWater intake validation:** Water intake is checked to confirm that the input is numeric and within realistic limits:
+- **Water intake validation:** Water intake is checked to confirm that the input is numeric and within realistic limits:
+Category: Daily water consumption in liters
+Data type: Float
+Validation: Must be a valid number (e.g., 1.5) — non-numeric input is rejected
+
 	```python
 	try:
 	water = float(water_input)
@@ -96,6 +112,10 @@ The application validates all user input to ensure data integrity and a smooth u
 	```
 
 - **Step count validation:** The number of steps is verified to be a positive integer:
+Category: Physical activity measurement
+Data type: Integer
+Validation: Must be a positive number
+
 	```python
 	if not steps.isdigit() or int(steps) < 0:
     	print("⚠️ Invalid input. Please enter a positive number.")
@@ -106,17 +126,13 @@ The application validates all user input to ensure data integrity and a smooth u
 
 These checks prevent crashes and guide the user to provide correct input, matching the validation requirements described in the project guidelines.
 
----
-
----
-
 
 ### 3. File Processing 
 
 The application reads and writes data using files:
 
-- **Input file:** `weekly_data.txt` — Contains the user’s tracked daily data, one line per day in the format:
-				Day;SleepQuality;StressLevel;Friends;WaterIntake;Exercise;Mood;WorkHours;Hobbies;Steps;Medication:
+- **Input file:** `input_validation.py` — Contains the user’s tracked daily data, one line per day in the format:
+				   Day;SleepQuality;StressLevel;Friends;WaterIntake;Exercise;Mood;WorkHours;Hobbies;Steps;Medication:
 	
 	Example:
 
@@ -126,11 +142,11 @@ The application reads and writes data using files:
 				Day 3;bad;5;no;0.7;no;irritable;10;no;3000;no
 
 		```
-- The application reads this file to generate a weekly summary and give personalized advice.
+- The application reads this file to generate a weekly or monthly summary and give personalized advice.
 - Reading the file (example implementation):
 
 		```python
-		with open("weekly_data.txt", "r") as file:
+		with open("input_validation.py", "r") as file:
    			 for line in file:
         parts = line.strip().split(";")
         if len(parts) == 11:
@@ -140,7 +156,7 @@ The application reads and writes data using files:
 
 		```
 
-- **Output file:** `report.txt` — Generated after completing a week of entries.
+- **Output file:** `report.txt` — Generated after completing a week or month of entries.
 					The file contains averages, insights, and advice based on the collected data.
 		Example:
 
@@ -186,15 +202,16 @@ The application reads and writes data using files:
 ### 📂 Repository Structure
 	```text
 	e_life_project/
+├─ data_storage.py      # handles loading and saving data from/to json files
+├─ input_validation.py  # handles user input and validates it
 ├─ main.py              # main entry point (this file)
-├─ summary_logic.py     # Lara + helpers from Inês, calls storage from Sarah
-├─ storage_csv.py       # Sarah's CSV module
-├─ analysis_csv.py      # optional: simple CSV stats
-└─ wellness_data.csv    # created automatically after first run
+├─ menu.py              # in order to select the menu before starting the questionary and report
+├─ reports.py           # report generation module, generates weekly and monthy reports with analyses and advice
+├─ weekly_data.txt      # weekly data entry in numbers
+└─ wellness_score.py    # calculation module for the scoring system
 ```
 
 ### How to Run
-> 🚧 Adjust if needed.
 1. Open the repository in **GitHub Codespaces**
 2. Open the **Terminal**
 3. Run:
@@ -205,17 +222,14 @@ The application reads and writes data using files:
 ### Libraries Used
 
 - `os`: Check if files exist and handle paths.
-- `csv` → Write and read daily input data in structured form.
 - `datetime` → Add timestamps or weekly summaries.
+- `json`: Used for data storage
+- `from menu import`: main_menu
 
-All used libraries are built into Python’s standard library..
+All used libraries are built into Python’s standard library.
 
 These libraries are part of the Python standard library, so no external installation is required. They were chosen for their simplicity and effectiveness in handling file management tasks in a console application.
 
-
-## 👥 Team & Contributions
-
-> 🚧 Fill in the names of all team members and describe their individual contributions below. Each student should be responsible for at least one part of the project.
 
 | Name       	   | Contribution (Before Project started)        |Contribution after Projectstart                          |
 |------------------|----------------------------------------------|---------------------------------------------------------|
@@ -231,45 +245,7 @@ These libraries are part of the Python standard library, so no external installa
 | Jegge Lara 	   | Invoice generation (file output) and slides  |1.) created reports.py and wellness_score.py             |
 |                  |                                              |2.) PPT -> a.Rationale for the topic chosen              |
 |                  |                                              |           b.Project for the topic chosen                |
-
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-1️⃣ Who did what (for your documentation)
-You can copy-paste and adjust names if you like:
-Team Roles & Responsibilities
-Inês – Input & Validation
-Designed and implemented the user input flow for the daily tracker.
-Wrote reusable helper functions:
-ask_yes_no()
-ask_int_in_range()
-ask_non_negative_int()
-ask_non_negative_float()
-ask_choice()
-Integrated these helpers into the main e_life_tracker() function to avoid repeated code and make input validation beginner-friendly.
-Sarah – CSV Storage
-Created the file storage_csv.py to handle all CSV file operations.
-Defined the CSV structure via FIELDNAMES (including date, score, sleep, stress, etc.).
-Implemented:
-ensure_csv_exists() → creates wellness_data.csv with a header row.
-append_entry(entry_dict) → appends one validated daily entry as a row.
-Helped design build_entry_dict() in summary_logic.py so daily tracker results are saved correctly.
-Lara – Summary & Logic
-Designed the wellness scoring logic and advice system in summary_logic.py.
-Implemented:
-fun_girly_message(score) → fun daily message based on score.
-generate_daily_summaries_girly(inputs) → text summaries per category (sleep, mood, water, etc.).
-generate_monthly_report_girly(month_data) → end-of-month “GirlyPop” style report using averages and mood stats.
-e_life_tracker() → collects one full day (using Inês’ helpers) and returns score, advice, summaries, and inputs.
-run_month() → loops over multiple days, calls e_life_tracker(), saves to CSV (Sarah’s part), and prints the monthly report.
-Bonus: Simple Analysis Script
-An extra file analysis_csv.py reads wellness_data.csv and prints basic statistics (average score, average stress, average steps, sleep counts).
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 
-## 🤝 Contributing
-
-> 🚧 This is a template repository for student projects.  
-> 🚧 Do not change this section in your final submission.
+----------------------------------------------------------------------------------------------------------------------------------------------------------## 🤝 Contributing
 
 - Use this repository as a starting point by importing it into your own GitHub account.  
 - Work only within your own copy — do not push to the original template.  
