@@ -1,0 +1,23 @@
+
+============================================================
+📊 WEEKLY WELLNESS REPORT
+============================================================
+Period: 2025/12/01 to 2025/12/15
+Days tracked: 5
+
+📈 Average Daily Score: 17.8
+
+METRIC AVERAGES:
+  • sleep: 2.6
+  • stress: 2.4
+  • friends: 1.8
+  • water: 3.0
+  • exercise: 1.6
+  • mood: 3.0
+  • work_hours: 5.6
+  • hobbies: 1.4
+  • steps: 1.0
+  • meds: 1.4
+
+────────────────────────────────────────────────────────────
+✨ Good week! Small improvements possible.

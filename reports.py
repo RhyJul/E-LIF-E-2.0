@@ -5,6 +5,7 @@ Generates weekly and monthly reports with analysis and advice
 
 import datetime
 import json
+import os
 
 FIELDS_NUMERIC = ["sleep", "stress", "friends", "water",
                   "exercise", "mood", "work_hours", "hobbies", "steps", "meds"]
@@ -124,7 +125,9 @@ def generate_monthly_advice(averages):
 
 
 def save_monthly_report(data):
-    """Generate and save comprehensive monthly report."""
+    """
+    Generate comprehensive monthly report in JSON and TXT format.
+    """
     if not data:
         print("❌ No days logged this month 😭")
         return
@@ -132,11 +135,11 @@ def save_monthly_report(data):
     today = datetime.datetime.now()
 
     averages = {
-        field: sum(d[field] for d in data) / len(data)
+        field: sum((d.get(field) or 0) for d in data) / len(data)
         for field in FIELDS_NUMERIC
     }
 
-    report_data = {
+    report = {
         "month": today.month,
         "year": today.year,
         "days_logged": len(data),
@@ -145,48 +148,24 @@ def save_monthly_report(data):
         "averages": averages
     }
 
-    advice = generate_monthly_advice(averages)
+    # Save JSON in data folder with 'monthly_data' in filename
+    os.makedirs("data", exist_ok=True)
+    json_name = f"data/monthly_data_{today.year}_{today.month:02d}.json"
+    with open(json_name, "w") as f:
+        json.dump(report, f, indent=4)
 
-    json_name = f"monthly_report_{today.year}_{today.month:02d}.json"
-    with open(json_name, "w", encoding="utf-8") as f:
-        json.dump(report_data, f, indent=4)
-
+    # Save TXT in root folder
     txt_name = f"monthly_report_{today.year}_{today.month:02d}.txt"
     with open(txt_name, "w", encoding="utf-8") as f:
         f.write("💗 MONTHLY GIRLYPOP WELLNESS REPORT 💗\n")
-        f.write("="*70 + "\n\n")
-        f.write(f"📅 Month: {today.strftime('%B %Y')}\n")
-        f.write(f"📊 Days tracked: {report_data['days_logged']}\n")
-        f.write(f"📈 Total wellness score: {report_data['total_score']}\n")
-        f.write(
-            f"⭐ Average daily score: {report_data['average_score']:.1f}"
-            f"/25\n\n"
-        )
-
-        f.write("─" * 70 + "\n")
-        f.write("MONTHLY METRICS BREAKDOWN:\n")
-        f.write("─" * 70 + "\n\n")
+        f.write("="*60 + "\n")
+        f.write(f"Month: {today.month}/{today.year}\n")
+        f.write(f"Days logged: {report['days_logged']}\n")
+        f.write(f"Total score: {report['total_score']}\n")
+        f.write(f"Average score: {report['average_score']:.1f}\n\n")
+        f.write("AVERAGES BY METRIC:\n")
         for k, v in averages.items():
-            f.write(f"  • {k.capitalize()}: {v:.1f}\n")
-
-        f.write("\n" + "─" * 70 + "\n")
-        f.write("💡 PERSONALIZED ADVICE FOR THIS MONTH:\n")
-        f.write("─" * 70 + "\n\n")
-        for idx, adv in enumerate(advice, 1):
-            f.write(f"{idx}. {adv}\n")
-
-        f.write("\n" + "="*70 + "\n")
-        f.write("🎯 SUMMARY:\n")
-        if report_data['average_score'] >= 20:
-            f.write("You had an EXCELLENT month! 🌟\n")
-        elif report_data['average_score'] >= 16:
-            f.write("You had a GOOD month! ✨\n")
-        elif report_data['average_score'] >= 12:
-            f.write("You had an OK month. Room for improvement! 💪\n")
-        else:
-            f.write("This month was challenging.\n"
-                    "Progress over perfection! 💖\n")
-        f.write("="*70 + "\n")
+            f.write(f"  • {k}: {v:.1f}\n")
 
     print(f"\n✅ Reports saved!\n  📄 JSON: {json_name}\n  📋 TXT: {txt_name}")
 

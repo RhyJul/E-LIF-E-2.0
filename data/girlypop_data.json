@@ -26,5 +26,47 @@
         "steps": 3,
         "meds": 2,
         "score": 24
+    },
+    {
+        "date": "2025/12/14",
+        "sleep": 3,
+        "stress": 2,
+        "friends": 1,
+        "water": 3,
+        "exercise": 1,
+        "mood": 3,
+        "work_hours": 2.0,
+        "hobbies": 1,
+        "steps": null,
+        "meds": 1,
+        "score": 16
+    },
+    {
+        "date": "2025/12/14",
+        "sleep": 3,
+        "stress": 2,
+        "friends": 1,
+        "water": 3,
+        "exercise": 1,
+        "mood": 3,
+        "work_hours": 3.0,
+        "hobbies": 1,
+        "steps": null,
+        "meds": 1,
+        "score": 16
+    },
+    {
+        "date": "2025/12/15",
+        "sleep": 2,
+        "stress": 5,
+        "friends": 2,
+        "water": 3,
+        "exercise": 1,
+        "mood": 3,
+        "work_hours": 7.0,
+        "hobbies": 1,
+        "steps": null,
+        "meds": 1,
+        "score": 13
     }
 ]

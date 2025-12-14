@@ -7,7 +7,7 @@ import json
 import os
 
 DATA_FILE = "data/girlypop_data.json"
-WEEKLY_DATA_FILE = "weekly_data.txt"
+WEEKLY_DATA_FILE = "data/weekly_data.txt"
 
 
 def load_data():
@@ -27,21 +27,22 @@ def save_data(data):
 
 def append_to_weekly_log(day):
     """Append daily entry to weekly_data.txt for 28-day tracking."""
+    os.makedirs("data", exist_ok=True)
     with open(WEEKLY_DATA_FILE, "a", encoding="utf-8") as f:
         f.write(f"\n{'='*50}\n")
         f.write(f"Date: {day['date']}\n")
         f.write(f"Score: {day['score']}\n")
         f.write(
-            f"Sleep: {day['sleep']}, Stress: {day['stress']},"
-            f" Mood: {day['mood']}\n"
+            f"Sleep: {day['sleep']}, Stress: {day['stress']}, "
+            f"Mood: {day['mood']}\n"
         )
         f.write(
-            f"Exercise: {day['exercise']}, Water: {day['water']},"
-            f" Steps: {day['steps']}\n"
+            f"Exercise: {day['exercise']}, Water: {day['water']}, "
+            f"Steps: {day['steps']}\n"
         )
         f.write(
-            f"Friends: {day['friends']}, Hobbies: {day['hobbies']},"
-            f" Meds: {day['meds']}\n"
+            f"Friends: {day['friends']}, Hobbies: {day['hobbies']}, "
+            f"Meds: {day['meds']}\n"
         )
 
 

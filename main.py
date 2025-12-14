@@ -4,7 +4,7 @@ import os
 from menu import main_menu
 
 DATA_FILE = "data/girlypop_data.json"
-WEEKLY_DATA_FILE = "weekly_data.txt"
+WEEKLY_DATA_FILE = "data/weekly_data.txt"
 WEEKLY_REPORT_FILE = "weekly_report.txt"
 
 # Input mappings for validation
@@ -38,6 +38,7 @@ def save_data(data):
 
 def append_to_weekly_log(day):
     """Append daily entry to weekly_data.txt for 28-day tracking."""
+    os.makedirs("data", exist_ok=True)
     with open(WEEKLY_DATA_FILE, "a", encoding="utf-8") as f:
         f.write(f"\n{'='*50}\n")
         f.write(f"Date: {day['date']}\n")
@@ -95,12 +96,31 @@ def collect_daily_inputs():
     - Returns complete daily entry
     """
     today = datetime.datetime.now().strftime("%Y/%m/%d")
+    while True:
+        change = input(
+            f"Today is {today}. Do you want to change the date? (yes/no): "
+        ).strip().lower()
+        if change == "yes":
+            while True:
+                custom_date = input("Enter the date (YYYY/MM/DD): ").strip()
+                try:
+                    datetime.datetime.strptime(custom_date, "%Y/%m/%d")
+                    date = custom_date
+                    break
+                except ValueError:
+                    print("❌ Invalid date format. Please try again.")
+            break
+        elif change == "no":
+            date = today
+            break
+        else:
+            print("Please answer 'yes' or 'no'.")
 
     print("\n🌟 Quick Daily Check-in 🌟")
-    print(f"Today: {today}\n")
+    print(f"Date: {date}\n")
 
     day = {
-        "date": today,
+        "date": date,
         "sleep": ask_choice("Sleep (good/medium/bad): ", SLEEP_MAP),
         "stress": ask_number("Stress (1-5): ", 1, 5),
         "friends": ask_choice("Hung out with friends? (yes/no): ", YES_NO_MAP),
@@ -139,10 +159,10 @@ advice = []
 def to_number(val):
     try:
         return int(val)
-    except ValueError:
+    except (ValueError, TypeError):
         try:
             return float(val)
-        except ValueError:
+        except (ValueError, TypeError):
             return 0
 
 
@@ -274,13 +294,13 @@ def save_monthly_report(data):
         "averages": averages
     }
 
-    # Save JSON
-    json_name = f"monthly_report_{today.year}_{today.month:02d}.json"
-    json.dump(report, open(json_name, "w"), indent=4)
+    # Save JSON in data folder with 'monthly_data' in filename
+    os.makedirs("data", exist_ok=True)
+    json_name = f"data/monthly_data_{today.year}_{today.month:02d}.json"
+    with open(json_name, "w") as f:
+        json.dump(report, f, indent=4)
 
-# TXT. FOR MORRE DEFINTION
-
-    # Save TXT
+    # Save TXT in root folder
     txt_name = f"monthly_report_{today.year}_{today.month:02d}.txt"
     with open(txt_name, "w", encoding="utf-8") as f:
         f.write("💗 MONTHLY GIRLYPOP WELLNESS REPORT 💗\n")
@@ -303,10 +323,10 @@ def save_monthly_report(data):
 def to_number(val):
     try:
         return int(val)
-    except ValueError:
+    except (ValueError, TypeError):
         try:
             return float(val)
-        except ValueError:
+        except (ValueError, TypeError):
             return 0
 
 
