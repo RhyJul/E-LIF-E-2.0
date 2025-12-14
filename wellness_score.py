@@ -49,7 +49,8 @@ if __name__ == "__main__":
     print("✅ wellness_score.py loaded successfully")
     test_day = {
         "sleep": 2, "stress": 3, "friends": 1, "water": 3,
-        "exercise": 1, "mood": 3, "work_hours": 8, "hobbies": 1, "steps": 2, "meds": 1
+        "exercise": 1, "mood": 3, "work_hours": 8,
+        "hobbies": 1, "steps": 2, "meds": 1
     }
     result, advice = process_day(test_day)
     print(f"   Test score: {result['score']}")

@@ -43,11 +43,17 @@ def append_to_weekly_log(day):
         f.write(f"Date: {day['date']}\n")
         f.write(f"Score: {day['score']}\n")
         f.write(
-            f"Sleep: {day['sleep']}, Stress: {day['stress']}, Mood: {day['mood']}\n")
+            f"Sleep: {day['sleep']}, Stress: {day['stress']}, "
+            f"Mood: {day['mood']}\n"
+        )
         f.write(
-            f"Exercise: {day['exercise']}, Water: {day['water']}, Steps: {day['steps']}\n")
+            f"Exercise: {day['exercise']}, Water: {day['water']}, "
+            f"Steps: {day['steps']}\n"
+        )
         f.write(
-            f"Friends: {day['friends']}, Hobbies: {day['hobbies']}, Meds: {day['meds']}\n")
+            f"Friends: {day['friends']}, Hobbies: {day['hobbies']}, "
+            f"Meds: {day['meds']}\n"
+        )
 
 # ==========================================
 # Input Validation & Collection
@@ -72,10 +78,13 @@ def ask_number(prompt, min_val=None, max_val=None, is_float=False):
             if (min_val is None or value >= min_val) and \
                (max_val is None or value <= max_val):
                 return value
-        except:
+        except ValueError:
             pass
-        print(f"❌ Invalid input. Please enter a number" +
-              (f" between {min_val}-{max_val}" if min_val and max_val else "") + ".")
+        print(
+            f"❌ Invalid input. Please enter a number"
+            + (f" between {min_val}-{max_val}" if min_val and max_val else "")
+            + "."
+        )
 
 
 def collect_daily_inputs():
@@ -130,10 +139,10 @@ advice = []
 def to_number(val):
     try:
         return int(val)
-    except:
+    except ValueError:
         try:
             return float(val)
-        except:
+        except ValueError:
             return 0
 
 
@@ -144,9 +153,13 @@ def process_day(day):
     - Provides actionable, personalized advice
     - Returns score and advice list
     """
-    score = sum(to_number(day.get(key)) for key in [
-        "sleep", "friends", "water", "exercise", "mood", "steps", "hobbies", "meds"
-    ])
+    score = sum(
+        to_number(day.get(key))
+        for key in [
+            "sleep", "friends", "water", "exercise", "mood",
+            "steps", "hobbies", "meds"
+        ]
+    )
 
     advice = []
 
@@ -290,10 +303,10 @@ def save_monthly_report(data):
 def to_number(val):
     try:
         return int(val)
-    except:
+    except ValueError:
         try:
             return float(val)
-        except:
+        except ValueError:
             return 0
 
 
@@ -304,9 +317,13 @@ def process_day(day):
     - Provides actionable, personalized advice
     - Returns score and advice list
     """
-    score = sum(to_number(day.get(key)) for key in [
-        "sleep", "friends", "water", "exercise", "mood", "steps", "hobbies", "meds"
-    ])
+    score = sum(
+        to_number(day.get(key))
+        for key in [
+            "sleep", "friends", "water", "exercise", "mood",
+            "steps", "hobbies", "meds"
+        ]
+    )
 
     advice = []
 
@@ -354,7 +371,9 @@ def run():
             save_data(data)
             append_to_weekly_log(processed)
             print(
-                f"\n✅ Saved {processed['date']} → Wellness Score: {processed['score']}")
+                f"\n✅ Saved {processed['date']} → Wellness Score:"
+                f"{processed['score']}"
+            )
             if advice:
                 print("\n💡 Personal Advice for Today:")
                 for a in advice:

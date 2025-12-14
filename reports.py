@@ -115,7 +115,8 @@ def generate_monthly_advice(averages):
 
     if averages.get("mood", 0) < 2:
         advice_list.append(
-            "💖 Your mood could use a boost. Try something that makes you smile!")
+            "💖 Your mood could use a boost. Try something that \n"
+            "makes you smile!")
     elif averages.get("mood", 0) >= 2.5:
         advice_list.append("😊 Your mood is great! You've got positive energy.")
 
@@ -158,7 +159,9 @@ def save_monthly_report(data):
         f.write(f"📊 Days tracked: {report_data['days_logged']}\n")
         f.write(f"📈 Total wellness score: {report_data['total_score']}\n")
         f.write(
-            f"⭐ Average daily score: {report_data['average_score']:.1f}/25\n\n")
+            f"⭐ Average daily score: {report_data['average_score']:.1f}"
+            f"/25\n\n"
+        )
 
         f.write("─" * 70 + "\n")
         f.write("MONTHLY METRICS BREAKDOWN:\n")
@@ -181,7 +184,8 @@ def save_monthly_report(data):
         elif report_data['average_score'] >= 12:
             f.write("You had an OK month. Room for improvement! 💪\n")
         else:
-            f.write("This month was challenging. Progress over perfection! 💖\n")
+            f.write("This month was challenging.\n"
+                    "Progress over perfection! 💖\n")
         f.write("="*70 + "\n")
 
     print(f"\n✅ Reports saved!\n  📄 JSON: {json_name}\n  📋 TXT: {txt_name}")

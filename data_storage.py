@@ -32,11 +32,17 @@ def append_to_weekly_log(day):
         f.write(f"Date: {day['date']}\n")
         f.write(f"Score: {day['score']}\n")
         f.write(
-            f"Sleep: {day['sleep']}, Stress: {day['stress']}, Mood: {day['mood']}\n")
+            f"Sleep: {day['sleep']}, Stress: {day['stress']},"
+            f" Mood: {day['mood']}\n"
+        )
         f.write(
-            f"Exercise: {day['exercise']}, Water: {day['water']}, Steps: {day['steps']}\n")
+            f"Exercise: {day['exercise']}, Water: {day['water']},"
+            f" Steps: {day['steps']}\n"
+        )
         f.write(
-            f"Friends: {day['friends']}, Hobbies: {day['hobbies']}, Meds: {day['meds']}\n")
+            f"Friends: {day['friends']}, Hobbies: {day['hobbies']},"
+            f" Meds: {day['meds']}\n"
+        )
 
 
 if __name__ == "__main__":

@@ -20,7 +20,8 @@ print(f"   Advice items: {len(advice)}")
 for a in advice[:3]:
     print(f"   - {a}")
 expected_score = sum([1, 1, 1, 1, 1, 1, 1, 1]) + 0  # No stress bonus
-assert result['score'] == expected_score, f"Expected {expected_score}, got {result['score']}"
+assert result['score'] == expected_score, f"Expected"
+f"{expected_score}, got {result['score']}"
 
 # Test 2: High score day
 print("\nTest 2: High score day (excellent)...")
@@ -33,7 +34,8 @@ result, advice = process_day(high_day)
 print(f"✅ Score: {result['score']}")
 print(f"   Advice items: {len(advice)}")
 expected_score = sum([3, 3, 3, 3, 3, 3, 3, 3]) + 3  # Max stress bonus
-assert result['score'] == expected_score, f"Expected {expected_score}, got {result['score']}"
+assert result['score'] == expected_score, f"Expected"
+f"{expected_score}, got {result['score']}"
 
 # Test 3: Medium score day
 print("\nTest 3: Medium score day (balanced)...")
@@ -46,6 +48,7 @@ result, advice = process_day(medium_day)
 print(f"✅ Score: {result['score']}")
 print(f"   Advice items: {len(advice)}")
 expected_score = sum([2, 2, 2, 2, 2, 2, 2, 2]) + 1  # Partial stress bonus
-assert result['score'] == expected_score, f"Expected {expected_score}, got {result['score']}"
+assert result['score'] == expected_score, f"Expected"
+f"{expected_score}, got {result['score']}"
 
 print("\n✅ wellness_score.py tests PASSED!\n")

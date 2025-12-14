@@ -31,10 +31,12 @@ def ask_number(prompt, min_val=None, max_val=None, is_float=False):
             if (min_val is None or value >= min_val) and \
                (max_val is None or value <= max_val):
                 return value
-        except:
+        except ValueError:
             pass
         print(f"❌ Invalid input. Please enter a number" +
-              (f" between {min_val}-{max_val}" if min_val and max_val else "") + ".")
+              (f" between {min_val}-{max_val}" if min_val and max_val else "")
+              + "."
+              )
 
 
 def classify_water():

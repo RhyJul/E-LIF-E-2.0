@@ -2,7 +2,7 @@ def main_menu():
     """Show a simple menu, validate input, and return the choice."""
 
     menu = (
-        "Hello luv — please give us a hint what we should do today?\n\n"
+        "Hello luv — please give us a hint what we should do today?\n"
         "Would you like to:\n"
         "1. Spill the tea for today\n"
         "2. Give a report for this month\n"
@@ -29,7 +29,8 @@ def main_menu():
             print("Girly here's your weekly report! Keep Going ;)")
             return choice
         elif choice == 4:
-            print("No problem. If you need to spill the tea, I'm here for you :)")
+            print("No problem. If you need to spill the tea, "
+                  "I'm here for you :)")
             return choice
         else:
             print("Please choose 1, 2, 3 or 4.\n")
