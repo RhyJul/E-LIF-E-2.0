@@ -9,7 +9,7 @@ class DailyEntry(SQLModel, table=True):
   stress: int
   friends: int
   water: int
-  excercise: int
+  exercise: int
   mood: int
   work_hours: float
   hobbies: int
