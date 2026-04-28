@@ -36,3 +36,14 @@ class WellnessService:
 
         entry.score = score
         return score, advice
+
+    def weekly_report(self, entrys: list[DailyEntry]) -> dict[str, any]:
+        total_score = sum(entry.score for entry in entrys)
+        average_score = total_score / len(entrys) if entrys else 0
+
+        report = {
+            "total_score": total_score,
+            "average_score": average_score,
+            "entries": entrys
+        }
+        return report
