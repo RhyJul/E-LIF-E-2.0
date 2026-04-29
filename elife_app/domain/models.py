@@ -4,6 +4,13 @@ from sqlmodel import SQLModel, Field
 # Use Python 3.11.15 for sqlmodel otherwise an error will occur when running the app.
 
 
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str
+    password: str
+    gender: str  # male / female
+
+
 class DailyEntry(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     date: date

@@ -1,10 +1,9 @@
+from elife_app.domain.models import DailyEntry
 import sys
 from pathlib import Path
 
 # Add workspace root to path so absolute imports work
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
-from elife_app.domain.models import DailyEntry
 
 
 class WellnessService:
@@ -42,3 +41,12 @@ class WellnessService:
 
         entry.score = score
         return score, advice
+
+    def weekly_report(self, entries):
+        if not entries:
+            return "No data."
+
+        last_7 = entries[-7:]
+        avg = sum(e.score for e in last_7) / len(last_7)
+
+        return f"📊 Weekly Average Score: {avg:.1f}"
