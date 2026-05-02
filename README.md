@@ -163,15 +163,15 @@ The application uses **SQLModel** to map domain objects to a SQLite database.
 
 ### Entities
 - `User`
-- `Habit_Definition`
+- `Wellnes-log`
 - `Daily_Entry`
-- `Wellness_Log`
+- `Habit`
 - `Report`
 
 ### Relationships
 - One `User` → many `Daily_Entry`
 - Each `Daily_Entry` has one `Wellness_log`
-- Each `Daily_Entry` contains many `Habit_Defintion`
+- One `Daily_Entry` contains many `Habit`
 - One `Report` references many `Daily_Entry`
 
 ---
