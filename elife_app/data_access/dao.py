@@ -1,3 +1,4 @@
+
 from sqlmodel import Session, select
 from data_access.db import engine
 from domain.models import User, DailyEntry
