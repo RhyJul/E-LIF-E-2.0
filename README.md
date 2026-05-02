@@ -109,7 +109,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ## 🧩 Use Cases
 
-![UML Use Case Diagram]()
+![UML Use Case Diagram](docs/architecture-diagrams/E-Life-UC.png)
 
 - Enter Daily Health Data (User)
 - Calculate Wellness Score (System)
@@ -157,7 +157,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ## 🗄️ Database and ORM
 
-![ER Diagram](docs/architecture-diagrams/er_diagram.png)
+![ER Diagram](docs/architecture-diagrams/ER-E-life.jpg)
 
 The application uses **SQLModel** to map domain objects to a SQLite database.
 
@@ -350,9 +350,10 @@ Order Pizza:
 
 | Name      | Contribution |
 |-----------|--------------|
-| Student A | NiceGUI UI + documentation |
-| Student B | Database & ORM + documentation |
-| Student C | Business logic + documentation |
+| Berfin | OOP |
+| Laura | Testing |
+| Sarah | README |
+| Toby | ORM (Database) |
 
 ---
 
