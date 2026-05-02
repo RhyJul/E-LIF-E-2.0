@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from nicegui import ui
+## from nicegui import ui ## ## for later use, not needed for now, to avoid import errors in the meantime
 
 from .data_access.db import Database
-from .data_access.dao import EntryDAO
+###from .data_access.dao import EntryDAO ## --- IGNORE --- this is not needed for now, to avoid import errors in the meantime
 from .services.wellness_service import WellnessService
 
 

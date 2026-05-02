@@ -1,6 +1,6 @@
 
 from sqlmodel import Session, select
-from data_access.db import engine
+from data_access.db import engine  ## explain why this is needed, and how it works, in the context of the DAO
 from domain.models import User, DailyEntry
 
 # Registering users and login of users
