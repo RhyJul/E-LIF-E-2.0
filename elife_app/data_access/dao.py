@@ -1,37 +1,34 @@
-from __future__ import annotations
 
-from typing import List, Optional
-
-from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
+from data_access.db import engine
+from domain.models import User, DailyEntry
 
-from ..domain.models import DailyEntry
-
-
-class BaseDAO:
-    """Base class holding the engine."""
-
-    def __init__(self, engine: Engine) -> None:
-        self.engine = engine
-
-    def session(self) -> Session:
-        return Session(self.engine)
+# Registering users and login of users
 
 
-class EntryDAO(BaseDAO):
-    """DAO for saving and loading daily entries."""
+class WellnessDAO:
 
-    def create(self, entry: DailyEntry) -> DailyEntry:
-        with self.session() as session:
+    def register_user(self, user):
+        with Session(engine) as session:
+            session.add(user)
+            session.commit()
+
+    def login_user(self, username, password):
+        with Session(engine) as session:
+            statement = select(User).where(
+                User.username == username,
+                User.password == password
+            )
+            return session.exec(statement).first()
+
+    def add_entry(self, entry):
+        with Session(engine) as session:
             session.add(entry)
             session.commit()
-            session.refresh(entry)
-            return entry
 
-    def list_all(self) -> List[DailyEntry]:
-        with self.session() as session:
-            return list(session.exec(select(DailyEntry)).all())
-
-    def get_by_id(self, entry_id: int) -> Optional[DailyEntry]:
-        with self.session() as session:
-            return session.get(DailyEntry, entry_id)
+    def get_user_entries(self, user_id):
+        with Session(engine) as session:
+            statement = select(DailyEntry).where(
+                DailyEntry.user_id == user_id
+            )
+            return session.exec(statement).all()
