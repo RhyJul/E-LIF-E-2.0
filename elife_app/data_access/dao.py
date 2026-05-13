@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from typing import List, Optional
@@ -14,7 +13,7 @@ class BaseDAO:
         self.engine = engine
 
     def session(self) -> Session:
-        return Session(self.engine)
+        return Session(self.engine, expire_on_commit=False)
 
 
 class EntryDAO(BaseDAO):
@@ -24,11 +23,14 @@ class EntryDAO(BaseDAO):
             session.add(entry)
             session.commit()
             session.refresh(entry)
+            session.expunge(entry)
             return entry
 
     def list_all(self) -> List[DailyEntry]:
         with self.session() as session:
-            return list(session.exec(select(DailyEntry)).all())
+            results = session.exec(select(DailyEntry)).all()
+            session.expunge_all()
+            return list(results)
 
     def list_for_user(self, user_id: int) -> List[DailyEntry]:
         with self.session() as session:
@@ -37,11 +39,16 @@ class EntryDAO(BaseDAO):
                 .where(DailyEntry.user_id == user_id)
                 .order_by(DailyEntry.date.desc())
             )
-            return list(session.exec(statement).all())
+            results = session.exec(statement).all()
+            session.expunge_all()
+            return list(results)
 
     def get_by_id(self, entry_id: int) -> Optional[DailyEntry]:
         with self.session() as session:
-            return session.get(DailyEntry, entry_id)
+            entry = session.get(DailyEntry, entry_id)
+            if entry:
+                session.expunge(entry)
+            return entry
 
 
 class UserDAO(BaseDAO):
@@ -51,24 +58,23 @@ class UserDAO(BaseDAO):
             session.add(user)
             session.commit()
             session.refresh(user)
+            session.expunge(user)
             return user
 
     def get_by_username(self, username: str) -> Optional[User]:
         with self.session() as session:
-            return session.exec(select(User).where(User.username == username)).first()
+            user = session.exec(select(User).where(User.username == username)).first()
+            if user:
+                session.expunge(user)
+            return user
 
 
 class WellnessDAO:
-    """Higher-level DAO used by the CLI app.
-
-    This composes the lower-level DAOs and provides the methods expected
-    by `elife_app.main` (register_user, login_user, add_entry, get_user_entries).
-    """
+    """Higher-level DAO used by the CLI app."""
 
     def __init__(self, engine: Engine | None = None) -> None:
         if engine is None:
             from elife_app.data_access.db import Database
-
             db = Database()
             self.engine = db.engine
         else:
