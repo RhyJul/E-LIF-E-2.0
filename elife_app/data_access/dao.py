@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List, Optional
 
 from sqlalchemy.engine import Engine
+from sqlalchemy.orm import make_transient
 from sqlmodel import Session, select
 
 from elife_app.domain.models import DailyEntry, User
@@ -23,14 +24,15 @@ class EntryDAO(BaseDAO):
             session.add(entry)
             session.commit()
             session.refresh(entry)
-            session.expunge(entry)
+            make_transient(entry)
             return entry
 
     def list_all(self) -> List[DailyEntry]:
         with self.session() as session:
-            results = session.exec(select(DailyEntry)).all()
-            session.expunge_all()
-            return list(results)
+            entries = list(session.exec(select(DailyEntry)).all())
+            for entry in entries:
+                make_transient(entry)
+            return entries
 
     def list_for_user(self, user_id: int) -> List[DailyEntry]:
         with self.session() as session:
@@ -39,15 +41,16 @@ class EntryDAO(BaseDAO):
                 .where(DailyEntry.user_id == user_id)
                 .order_by(DailyEntry.date.desc())
             )
-            results = session.exec(statement).all()
-            session.expunge_all()
-            return list(results)
+            entries = list(session.exec(statement).all())
+            for entry in entries:
+                make_transient(entry)
+            return entries
 
     def get_by_id(self, entry_id: int) -> Optional[DailyEntry]:
         with self.session() as session:
             entry = session.get(DailyEntry, entry_id)
             if entry:
-                session.expunge(entry)
+                make_transient(entry)
             return entry
 
 
@@ -58,14 +61,14 @@ class UserDAO(BaseDAO):
             session.add(user)
             session.commit()
             session.refresh(user)
-            session.expunge(user)
+            make_transient(user)
             return user
 
     def get_by_username(self, username: str) -> Optional[User]:
         with self.session() as session:
             user = session.exec(select(User).where(User.username == username)).first()
             if user:
-                session.expunge(user)
+                make_transient(user)
             return user
 
 
