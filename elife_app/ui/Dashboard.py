@@ -118,7 +118,16 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                             meds = ui.checkbox('Did you take your meds today?')
                             period = ui.checkbox('Are you on your period?')
 
-                        result_label = ui.label('')
+                        result_label = ui.markdown('')
+
+                        def format_tip(tip: str) -> str:
+                            if ':' in tip:
+                                label, rest = tip.split(':', 1)
+                                if label in {'Friends', 'Exercise', 'Hobbies', 'Meds'}:
+                                    return f"**{label}:** {rest.strip()}"
+                            if tip.startswith('Hydrated queen!'):
+                                return f"**Hydrated queen!**{tip[len('Hydrated queen!'):]}"
+                            return tip
 
                         def submit():
                             entry = DailyEntry(
@@ -146,10 +155,12 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                                 if created_entry.created_at
                                 else 'unknown'
                             )
-                            result_label.text = (
-                                f'Your wellness score: {score}\n'
-                                f'Logged at: {stamp}\n'
-                                + '\n'.join(advice)
+                            formatted = [format_tip(tip) for tip in advice]
+                            body = '\n\n'.join(formatted)
+                            result_label.content = (
+                                f"**Your wellness score: {score}**  \n"
+                                f"Logged at: {stamp}\n\n"
+                                f"{body}"
                             )
 
                         ui.button('Submit check-in', on_click=submit).classes(

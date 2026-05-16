@@ -29,6 +29,15 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
             score_label = ui.label('')
             advice_container = ui.column().classes('w-full gap-2')
 
+            def format_advice_paragraphs(items: list[str], chunk_size: int = 3) -> str:
+                if not items:
+                    return "No recommendations for today. Keep it up!"
+                paragraphs = []
+                for i in range(0, len(items), chunk_size):
+                    chunk = items[i:i + chunk_size]
+                    paragraphs.append(' '.join(chunk))
+                return '\n\n'.join(paragraphs)
+
             def get_latest_entry():
                 entries = entry_dao.list_for_user(int(user_id))
                 if not entries:
@@ -68,11 +77,11 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
                     stamp = 'unknown'
                 timestamp_label.set_text(f'Logged at: {stamp}')
 
-                if advice:
-                    for tip in advice:
-                        ui.label(tip)
-                else:
-                    ui.label('No recommendations for today. Keep it up!')
+                report_header = (
+                    f"Feedback for entry dated {entry.date.isoformat()}."
+                )
+                report_body = format_advice_paragraphs(advice)
+                ui.markdown(f"**{report_header}**\n\n{report_body}")
 
             ui.button('Refresh', on_click=refresh)
             refresh()

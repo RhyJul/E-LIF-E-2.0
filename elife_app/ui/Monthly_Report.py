@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from nicegui import app, ui
 
 from elife_app.data_access.dao import EntryDAO
+from elife_app.services.wellness_service import WellnessService
 
 
 def create_monthly_report_page(entry_dao: EntryDAO) -> None:
@@ -26,6 +27,15 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
             range_label = ui.label('')
             avg_label = ui.label('')
             entries_container = ui.column().classes('w-full gap-2')
+
+            def format_advice_paragraphs(items: list[str], chunk_size: int = 3) -> str:
+                if not items:
+                    return "No recommendations for this entry."
+                paragraphs = []
+                for i in range(0, len(items), chunk_size):
+                    chunk = items[i:i + chunk_size]
+                    paragraphs.append(' '.join(chunk))
+                return '\n\n'.join(paragraphs)
 
             def load_entries():
                 entries = entry_dao.list_for_user(int(user_id))
@@ -60,8 +70,14 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
                         if entry.created_at
                         else 'unknown'
                     )
-                    ui.label(
-                        f'{entry.date.isoformat()} - score: {entry.score} - logged: {stamp}')
+                    score, advice = WellnessService().calculate_score(entry)
+                    header = (
+                        f"Feedback for entry dated {entry.date.isoformat()} (logged {stamp})."
+                    )
+                    body = format_advice_paragraphs(advice)
+                    with ui.card().classes('w-full'):
+                        ui.label(f'Score: {score}').classes('text-sm')
+                        ui.markdown(f"**{header}**\n\n{body}")
 
             ui.button('Refresh', on_click=refresh)
             refresh()
