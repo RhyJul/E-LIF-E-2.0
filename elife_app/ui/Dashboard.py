@@ -9,6 +9,8 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
     def dashboard_page() -> None:
         user_id = app.storage.user.get('user_id')
         username = app.storage.user.get('username')
+        gender = app.storage.user.get('gender')
+        is_female = gender == 'female'
 
         if not user_id or not username:
             ui.navigate.to('/')
@@ -53,6 +55,11 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                     border-radius: 999px;
                 }
                 .muted-text { color: var(--muted); }
+                .period-dialog .q-field__native,
+                .period-dialog .q-field__label,
+                .period-dialog .q-item__label {
+                    color: #0f172a;
+                }
             </style>
         ''')
 
@@ -116,7 +123,40 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                             exercise = ui.checkbox('Did you exercise today?')
                             hobbies = ui.checkbox('Did you do a hobby today?')
                             meds = ui.checkbox('Did you take your meds today?')
-                            period = ui.checkbox('Are you on your period?')
+                            period = None
+                            period_pain_input = None
+                            period_flow_input = None
+
+                            if is_female:
+                                period = ui.checkbox('Are you on your period?')
+
+                                with ui.dialog() as period_dialog:
+                                    with ui.card().classes('w-96 text-slate-900 period-dialog'):
+                                        ui.label('Period details').classes(
+                                            'text-lg font-semibold text-slate-900')
+                                        period_pain_input = ui.slider(
+                                            min=0, max=10, value=5).props('label-always')
+                                        ui.label('Pain level (0-10)')
+                                        ui.label(
+                                            'Flow level (1=low, 2=medium, 3=strong)'
+                                        ).classes('text-slate-900')
+                                        period_flow_input = ui.select(
+                                            [1, 2, 3],
+                                            value=2,
+                                        ).classes('w-full text-slate-900')
+
+                                        with ui.row().classes('w-full justify-end gap-2'):
+                                            ui.button(
+                                                'Save', on_click=period_dialog.close)
+                                            ui.button(
+                                                'Close', on_click=period_dialog.close)
+
+                                def on_period_change() -> None:
+                                    if period.value:
+                                        period_dialog.open()
+
+                                period.on('update:model-value',
+                                          lambda _: on_period_change())
 
                         result_label = ui.markdown('')
 
@@ -130,6 +170,17 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                             return tip
 
                         def submit():
+                            period_value = 0
+                            period_pain_value = None
+                            period_flow_value = None
+
+                            if is_female and period is not None and period.value:
+                                period_value = 1
+                                period_pain_value = int(
+                                    period_pain_input.value)
+                                period_flow_value = int(
+                                    period_flow_input.value)
+
                             entry = DailyEntry(
                                 user_id=int(user_id),
                                 date=date.today(),
@@ -143,7 +194,9 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                                 exercise=int(exercise.value),
                                 hobbies=int(hobbies.value),
                                 meds=int(meds.value),
-                                period=int(period.value),
+                                period=period_value,
+                                period_pain=period_pain_value,
+                                period_flow=period_flow_value,
                             )
                             score, advice = wellness_service.calculate_score(
                                 entry)
