@@ -98,6 +98,8 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
             with ui.card().classes('glass-card w-full max-w-6xl p-6'):
                 with ui.expansion('Start daily check-in', icon='edit_note').classes('w-full'):
                     with ui.column().classes('gap-4'):
+                        selected_date = ui.date(value=date.today().strftime('%Y-%m-%d'))
+                        ui.label("Select date")
                         sleep = ui.slider(min=0, max=10, value=5).props(
                             'label-always')
                         ui.label('Sleep quality (0-10)')

@@ -4,6 +4,7 @@ from elife_app.data_access.db import Database
 from sqlmodel import select
 from nicegui import app, ui
 from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 import sys
 
@@ -127,7 +128,11 @@ def create_daily_entry_page(database: Database | None = None) -> None:
             # Add new entry form
             with ui.card().classes('w-full'):
                 ui.label('Add new daily entry').classes('text-lg font-medium')
-                date_input = ui.input(label='Date', placeholder='YYYY-MM-DD')
+                with ui.row().classes("gap-4 items-center"):
+                    with ui.input(label='Date (DD.MM.YYYY)', placeholder='31/01/2026') as date_input:
+                        with ui.menu() as menu:
+                            ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
+                            ui.icon('calendar_month').classes('cursor-pointer').on('click', menu.open)
                 sleep_input = ui.number(label='Sleep quality', value=5)
                 stress_input = ui.number(label='Stress', value=5)
                 mood_input = ui.number(label='Mood', value=5)
@@ -136,7 +141,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
 
                 def add_entry() -> None:
                     try:
-                        d = date.fromisoformat(date_input.value)
+                        d = datetime.strptime(date_input.value, "%d.%m.%Y")
                     except ValueError:
                         ui.notify(
                             'Invalid date format, use YYYY-MM-DD', color='red')
