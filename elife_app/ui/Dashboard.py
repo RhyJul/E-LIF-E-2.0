@@ -207,11 +207,11 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                             entry.score = score
                             created_entry = entry_dao.create(entry)
                             stamp = (
-                                created_entry.created_at.strftime(
-                                    '%Y-%m-%d %H:%M')
-                                if created_entry.created_at
-                                else 'unknown'
+                            entry.created_at.strftime('%d.%m.%Y %H:%M')
+                            if entry.created_at
+                            else 'unknown'
                             )
+                            
                             formatted = [format_tip(tip) for tip in advice]
                             body = '\n\n'.join(formatted)
                             result_label.content = (

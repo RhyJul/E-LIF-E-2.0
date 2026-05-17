@@ -115,9 +115,10 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
                     stamp = 'unknown'
                 timestamp_label.set_text(f'Logged at: {stamp}')
 
-                report_header = (
-                    f"Feedback for entry dated {entry.date.isoformat()}."
+                header = (
+                f"Feedback for entry dated {entry.date.strftime('%d.%m.%Y')} (logged {stamp})."
                 )
+
                 report_body = format_advice_paragraphs(advice)
                 ui.markdown(f"**{report_header}**\n\n{report_body}")
 

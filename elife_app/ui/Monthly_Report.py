@@ -94,8 +94,8 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
                 start_date = entries[0].date
                 end_date = entries[-1].date
                 range_label.set_text(
-                    f'Last 28 days ({start_date.isoformat()} to {end_date.isoformat()})'
-                )
+                f'Last 28 days ({start_date.strftime("%d.%m.%Y")} to {end_date.strftime("%d.%m.%Y")})'
+                                )
 
                 avg = sum(entry.score for entry in entries) / len(entries)
                 avg_label.set_text(

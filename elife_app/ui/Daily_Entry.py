@@ -66,6 +66,24 @@ def create_daily_entry_page(database: Database | None = None) -> None:
         .q-checkbox__inner {
             color: #3b82f6 !important;
         }
+        .q-date__calendar-item button {
+            color: #0f172a !important;
+        }
+        .q-date__header {
+            color: white !important;
+        }
+        .q-date__header * {
+            color: white !important;
+        }
+        .q-date__calendar-weekdays > div {
+            color: #0f172a !important;
+        }
+        .q-date__navigation button {
+            color: #0f172a !important;
+        }
+        .q-date__header-title, .q-date__header-subtitle {
+            color: white !important;
+        }
     </style>
 ''')
 
@@ -74,8 +92,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
         wellness = WellnessService()
 
         with ui.column().classes('w-full items-center gap-4 p-8 text-white'):
-            ui.label(f'Daily entry for {username}').classes(
-                'text-2xl font-bold')
+            
             ui.button('Back to dashboard',
                       on_click=lambda: ui.navigate.to('/dashboard'))
 
@@ -108,7 +125,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                 def format_stamp() -> str:
                     if entry.created_at is None:
                         return 'unknown'
-                    return entry.created_at.strftime('%Y-%m-%d %H:%M')
+                    return entry.created_at.strftime('%d.%m.%Y %H:%M')
 
                 def open_edit() -> None:
                     with ui.dialog().classes('w-1/2') as dlg:
@@ -167,7 +184,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
 
                 with ui.row().classes('items-center justify-between w-full py-2 px-4 border rounded'):
                     ui.label(
-                        f'{entry.date.isoformat()} — score: {entry.score} — logged: {format_stamp()}')
+                        f'{entry.date.strftime("%d.%m.%Y")} — score: {entry.score} — logged: {format_stamp()}')
                     with ui.row():
                         ui.button('Edit', on_click=open_edit)
                         ui.button('Delete', on_click=delete_entry)
@@ -176,10 +193,10 @@ def create_daily_entry_page(database: Database | None = None) -> None:
             with ui.card().classes('glass-card text-white w-full'):
                 ui.label('Add new daily entry').classes('text-lg font-medium')
                 with ui.row().classes("gap-4 items-center"):
-                    with ui.input(label='Date (DD.MM.YYYY)', placeholder='31/01/2026') as date_input:
+                    with ui.input(label='Date (DD.MM.YYYY)', placeholder='31.01.2026') as date_input:
                         with ui.menu() as menu:
                             ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
-                            ui.icon('calendar_month').classes('cursor-pointer').on('click', menu.open)
+                    ui.icon('calendar_month').classes('cursor-pointer').on('click', menu.open)
                 sleep_input = ui.number(label='Sleep quality', value=5)
                 stress_input = ui.number(label='Stress', value=5)
                 mood_input = ui.number(label='Mood', value=5)
