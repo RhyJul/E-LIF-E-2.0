@@ -21,12 +21,59 @@ def create_daily_entry_page(database: Database | None = None) -> None:
         if not user_id or not username:
             ui.navigate.to('/')
             return
+        
+        ui.add_head_html('''
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-start: #0f172a;
+            --bg-end: #1f2937;
+            --card: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.18);
+            --accent: #f59e0b;
+            --text: #f8fafc;
+            --muted: #cbd5f5;
+        }
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
+                        radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
+                        linear-gradient(120deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+        }
+        .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .glass-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+        }
+        .pill-button .q-btn {
+            border-radius: 999px;
+        }
+        .muted-text { color: var(--muted); }
+        .q-field__native, .q-field__label {
+            color: white !important;
+        }
+        .q-checkbox__label {
+            color: white !important;
+        }
+        .q-checkbox__inner {
+            color: #3b82f6 !important;
+        }
+    </style>
+''')
 
         db = database or Database()
         db.init_schema()
         wellness = WellnessService()
 
-        with ui.column().classes('w-full items-center gap-4 p-8'):
+        with ui.column().classes('w-full items-center gap-4 p-8 text-white'):
             ui.label(f'Daily entry for {username}').classes(
                 'text-2xl font-bold')
             ui.button('Back to dashboard',
@@ -126,7 +173,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                         ui.button('Delete', on_click=delete_entry)
 
             # Add new entry form
-            with ui.card().classes('w-full'):
+            with ui.card().classes('glass-card text-white w-full'):
                 ui.label('Add new daily entry').classes('text-lg font-medium')
                 with ui.row().classes("gap-4 items-center"):
                     with ui.input(label='Date (DD.MM.YYYY)', placeholder='31/01/2026') as date_input:
