@@ -21,47 +21,51 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
             ui.navigate.to('/')
 
         ui.add_head_html('''
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-            <style>
-                :root {
-                    --bg-start: #0f172a;
-                    --bg-end: #1f2937;
-                    --card: rgba(255, 255, 255, 0.08);
-                    --card-border: rgba(255, 255, 255, 0.18);
-                    --accent: #f59e0b;
-                    --text: #f8fafc;
-                    --muted: #cbd5f5;
-                }
-                body {
-                    font-family: 'Source Sans 3', sans-serif;
-                    background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
-                                radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
-                                linear-gradient(120deg, var(--bg-start), var(--bg-end));
-                    color: var(--text);
-                }
-                .dashboard-title {
-                    font-family: 'Space Grotesk', sans-serif;
-                    letter-spacing: 0.3px;
-                }
-                .glass-card {
-                    background: var(--card);
-                    border: 1px solid var(--card-border);
-                    backdrop-filter: blur(10px);
-                    border-radius: 18px;
-                }
-                .pill-button .q-btn {
-                    border-radius: 999px;
-                }
-                .muted-text { color: var(--muted); }
-                .period-dialog .q-field__native,
-                .period-dialog .q-field__label,
-                .period-dialog .q-item__label {
-                    color: #0f172a;
-                }
-            </style>
-        ''')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-start: #0f172a;
+            --bg-end: #1f2937;
+            --card: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.18);
+            --accent: #f59e0b;
+            --text: #f8fafc;
+            --muted: #cbd5f5;
+        }
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
+                        radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
+                        linear-gradient(120deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+        }
+        .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .glass-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+        }
+        .pill-button .q-btn {
+            border-radius: 999px;
+        }
+        .muted-text { color: var(--muted); }
+        .q-field__native, .q-field__label {
+            color: white !important;
+        }
+        .q-checkbox__label {
+            color: white !important;
+        }
+        .q-checkbox__inner {
+            color: #3b82f6 !important;
+        }
+    </style>
+''')
 
         with ui.column().classes('w-full items-center gap-6 p-6 md:p-10'):
             with ui.row().classes('w-full max-w-6xl items-center justify-between gap-4'):
@@ -203,11 +207,11 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                             entry.score = score
                             created_entry = entry_dao.create(entry)
                             stamp = (
-                                created_entry.created_at.strftime(
-                                    '%Y-%m-%d %H:%M')
-                                if created_entry.created_at
-                                else 'unknown'
+                            entry.created_at.strftime('%d.%m.%Y %H:%M')
+                            if entry.created_at
+                            else 'unknown'
                             )
+                            
                             formatted = [format_tip(tip) for tip in advice]
                             body = '\n\n'.join(formatted)
                             result_label.content = (

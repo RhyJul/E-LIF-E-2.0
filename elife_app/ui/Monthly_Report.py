@@ -17,6 +17,44 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
         if not user_id or not username:
             ui.navigate.to('/')
             return
+        
+        ui.add_head_html('''
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-start: #0f172a;
+            --bg-end: #1f2937;
+            --card: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.18);
+            --accent: #f59e0b;
+            --text: #f8fafc;
+            --muted: #cbd5f5;
+        }
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
+                        radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
+                        linear-gradient(120deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+        }
+        .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .glass-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+        }
+        .pill-button .q-btn {
+            border-radius: 999px;
+        }
+        .muted-text { color: var(--muted); }
+    </style>
+''')
 
         with ui.column().classes('w-full items-center gap-4 p-8'):
             ui.label(f'Monthly report for {username}').classes(
@@ -56,8 +94,8 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
                 start_date = entries[0].date
                 end_date = entries[-1].date
                 range_label.set_text(
-                    f'Last 28 days ({start_date.isoformat()} to {end_date.isoformat()})'
-                )
+                f'Last 28 days ({start_date.strftime("%d.%m.%Y")} to {end_date.strftime("%d.%m.%Y")})'
+                                )
 
                 avg = sum(entry.score for entry in entries) / len(entries)
                 avg_label.set_text(
@@ -75,7 +113,7 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
                         f"Feedback for entry dated {entry.date.isoformat()} (logged {stamp})."
                     )
                     body = format_advice_paragraphs(advice)
-                    with ui.card().classes('w-full'):
+                    with ui.card().classes('glass-card w-full'):
                         ui.label(f'Score: {score}').classes('text-sm')
                         ui.markdown(f"**{header}**\n\n{body}")
 

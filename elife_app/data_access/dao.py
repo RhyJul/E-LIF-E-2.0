@@ -1,9 +1,9 @@
-
 from __future__ import annotations
 
 from typing import List, Optional
 
 from sqlalchemy.engine import Engine
+from sqlalchemy.orm import make_transient
 from sqlmodel import Session, select
 
 from elife_app.domain.models import DailyEntry, User
@@ -24,11 +24,15 @@ class EntryDAO(BaseDAO):
             session.add(entry)
             session.commit()
             session.refresh(entry)
+            make_transient(entry)
             return entry
 
     def list_all(self) -> List[DailyEntry]:
         with self.session() as session:
-            return list(session.exec(select(DailyEntry)).all())
+            entries = list(session.exec(select(DailyEntry)).all())
+            for entry in entries:
+                make_transient(entry)
+            return entries
 
     def list_for_user(self, user_id: int) -> List[DailyEntry]:
         with self.session() as session:
@@ -37,11 +41,17 @@ class EntryDAO(BaseDAO):
                 .where(DailyEntry.user_id == user_id)
                 .order_by(DailyEntry.date.desc())
             )
-            return list(session.exec(statement).all())
+            entries = list(session.exec(statement).all())
+            for entry in entries:
+                make_transient(entry)
+            return entries
 
     def get_by_id(self, entry_id: int) -> Optional[DailyEntry]:
         with self.session() as session:
-            return session.get(DailyEntry, entry_id)
+            entry = session.get(DailyEntry, entry_id)
+            if entry:
+                make_transient(entry)
+            return entry
 
 
 class UserDAO(BaseDAO):
@@ -51,24 +61,23 @@ class UserDAO(BaseDAO):
             session.add(user)
             session.commit()
             session.refresh(user)
+            make_transient(user)
             return user
 
     def get_by_username(self, username: str) -> Optional[User]:
         with self.session() as session:
-            return session.exec(select(User).where(User.username == username)).first()
+            user = session.exec(select(User).where(User.username == username)).first()
+            if user:
+                make_transient(user)
+            return user
 
 
 class WellnessDAO:
-    """Higher-level DAO used by the CLI app.
-
-    This composes the lower-level DAOs and provides the methods expected
-    by `elife_app.main` (register_user, login_user, add_entry, get_user_entries).
-    """
+    """Higher-level DAO used by the CLI app."""
 
     def __init__(self, engine: Engine | None = None) -> None:
         if engine is None:
             from elife_app.data_access.db import Database
-
             db = Database()
             self.engine = db.engine
         else:
