@@ -104,13 +104,13 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
 
                 if label == 'today':
                     date_label.set_text(
-                        f'Report for today ({entry.date.isoformat()})')
+                    f'Report for today ({entry.date.strftime("%d.%m.%Y")})')
                 else:
                     date_label.set_text(
-                        f'Most recent entry ({entry.date.isoformat()})')
+                    f'Most recent entry ({entry.date.strftime("%d.%m.%Y")})')
 
                 if entry.created_at:
-                    stamp = entry.created_at.strftime('%Y-%m-%d %H:%M')
+                    stamp = entry.created_at.strftime('%d.%m.%Y %H:%M')
                 else:
                     stamp = 'unknown'
                 timestamp_label.set_text(f'Logged at: {stamp}')
@@ -120,7 +120,7 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
                 )
 
                 report_body = format_advice_paragraphs(advice)
-                ui.markdown(f"**{report_header}**\n\n{report_body}")
+                ui.markdown(f"**{header}**\n\n{report_body}")
 
             ui.button('Refresh', on_click=refresh)
             refresh()

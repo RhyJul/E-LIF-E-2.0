@@ -43,6 +43,13 @@ def create_login_page(user_dao) -> None:
         .q-field__native, .q-field__label {
             color: white !important;
         }
+        .q-menu {
+            background: #1f2937 !important;
+            color: white !important;
+        }
+        .q-item__label {
+            color: white !important;
+        }
     </style>
 ''')
         with ui.column().classes('w-full h-screen items-center justify-center gap-4'):
@@ -110,6 +117,13 @@ def create_login_page(user_dao) -> None:
         }
         .muted-text { color: var(--muted); }
         .q-field__native, .q-field__label {
+            color: white !important;
+        }
+        .q-menu {
+            background: #1f2937 !important;
+            color: white !important;
+        }
+        .q-item__label {
             color: white !important;
         }
     </style>
