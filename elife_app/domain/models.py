@@ -37,3 +37,6 @@ class DailyEntry(SQLModel, table=True):
     score: int = Field(default=0)
 
     user: Optional[User] = Relationship(back_populates="daily_entries")
+
+    class Config:
+        validate_assignment = True

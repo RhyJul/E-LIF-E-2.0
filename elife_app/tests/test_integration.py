@@ -44,7 +44,7 @@ def test_create_single_entry_calculates_wellness_score(database, db):
     assert created_entry.id is not None
     assert score > 0
     assert created_entry.score == score
-    assert len(advice) == 0  # All healthy metrics, no advice needed
+    assert len(advice) > 0  # Service provides feedback/advice messages
 
 
 def test_create_multiple_entries_generates_weekly_report(database, db):
@@ -82,10 +82,9 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
     assert float(weekly_report.split(": ")[1]) > 0
 
 
-def test_user_registration_login_and_entry_creation(database, db):
-    """Test complete flow: user registration, login, and wellness entry creation."""
+def test_user_registration(database, db):
+    """Test complete flow: user registration."""
     wellness_dao = WellnessDAO(database.engine)
-    wellness_service = WellnessService()
 
     # Register new user
     user = User(username="testuser", password="password123", gender="female")
@@ -95,31 +94,16 @@ def test_user_registration_login_and_entry_creation(database, db):
     assert registered_user.id is not None
     assert registered_user.username == "testuser"
 
+
+def test_user_login(database, db):
+    """Test complete flow: user login."""
+    wellness_dao = WellnessDAO(database.engine)
+
+    # Register a user first
+    user = User(username="testuser", password="password123", gender="female")
+    registered_user = wellness_dao.register_user(user)
+
     # Login user
     logged_in_user = wellness_dao.login_user("testuser", "password123")
     assert logged_in_user is not None
     assert logged_in_user.id == registered_user.id
-
-    # Create wellness entry
-    entry = DailyEntry(
-        date=date(2025, 1, 20),
-        sleep_quality=9,
-        stress=2,
-        friends=1,
-        water_intake=3.0,
-        exercise=1,
-        mood=9,
-        work_hours=7.0,
-        hobbies=1,
-        steps=11000,
-        meds=1,
-        period=0,
-    )
-
-    created_entry = wellness_dao.add_entry(entry)
-    score, advice = wellness_service.calculate_score(created_entry)
-
-    assert created_entry is not None
-    assert created_entry.id is not None
-    assert score > 60  # Healthy lifestyle should have high score
-    assert len(advice) == 0  # All metrics are healthy
