@@ -139,7 +139,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ### Layers
 - **UI:** NiceGUI (browser-based interface)  
-- **Application logic:** controllers and services  
+- **Application logic:** controllers and services   ## Daily_Entry, Daily_Report, Dashboard, Login_Register, Monthly report.
 - **Persistence:** SQLite + ORM + data access (DAO)  
 
 ### Design Decisions
@@ -149,9 +149,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ### Patterns Used
 - MVC  
-- Repository / DAO  
-- Strategy (pricing rules)  
-- Adapter (invoice generation)  
+- Repository / DAO    
 
 ---
 
@@ -197,10 +195,11 @@ Each app must meet the following criteria in order to be accepted (see also the 
 
 The application interacts with the user via the browser. Users can:
 
-- View the pizza menu
-- Select pizzas and quantities
-- See the running total
-- Receive an invoice generated as a file
+- Register and Login in to the Account / also logout
+- View the dashboard
+- Select daily entry and fill out form
+- Receive or view the daily and monthly review
+- Possibility to edit or delete the entry 
 
 **Architecture note (per SS26 guidelines):** the browser is a thin client; UI state + business logic live on the server-side NiceGUI app.
 
@@ -215,7 +214,7 @@ These checks prevent crashes and guide the user to provide correct input, matchi
 
 ### 3. Database Management
 
-All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the pizza example this includes users, pizzas, and orders.
+All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the e-life app example this includes users, Daily entries, and Habit, Wellness_logi and report.
 
 ---
 
@@ -246,29 +245,38 @@ All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the p
 ## 📂 Repository Structure
 
 ```text
-pizza_app/
-├── __init__.py
-├── __main__.py
-├── application.py
+elife_app/
 ├── data_access/
 │   ├── __init__.py
 │   ├── dao.py
 │   ├── db.py
 │   └── seed.py
+|
 ├── domain/
 │   ├── __init__.py
 │   └── models.py
+|
 ├── services/
 │   ├── __init__.py
-│   ├── invoice_service.py
-│   ├── order_service.py
-│   ├── pizza_service.py
-│   └── pricing_service.py
-
+│   └── wellness_service.py
+|
+├── tests/
+|   ├── conftest.py
+|   ├── test_db.py
+|   ├── test_integration.py
+│   └── test_unit.py
+|
 └── ui/
-    ├── __init__.py
-    ├── controllers.py
-    └── pages.py
+│   ├── __init__.py....
+│   ├── Daily_Entry.py
+|   ├── Daily_Report.py
+│   ├── Dashboard.py
+│   ├── Login_Register.py
+│   ├── Monthly_Report.py
+│   └── pages.py......
+├── __init__.py
+└── application.py
+
 ```
 ---
 
