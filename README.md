@@ -155,7 +155,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ## 🗄️ Database and ORM
 
-![ER Diagram](docs/architecture-diagrams/ER-E-life.jpg)
+![ER Diagram](docs/architecture-diagrams/ER-Elife_At.jpg)
 
 The application uses **SQLModel** to map domain objects to a SQLite database.
 
