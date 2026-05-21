@@ -3,7 +3,7 @@ from datetime import date, datetime
 from sqlmodel import SQLModel, Field, Relationship
 # Use Python 3.11.15 for sqlmodel otherwise an error will occur when running the app.
 
-
+### ER Model User (Stays as it is// NO CHANGES)###
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
@@ -12,7 +12,7 @@ class User(SQLModel, table=True):
 
     daily_entries: List["DailyEntry"] = Relationship(back_populates="user")
 
-
+### ER Model DailyEntry (Stays as it is// NO CHANGES) ###
 class DailyEntry(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: Optional[int] = Field(
@@ -40,3 +40,11 @@ class DailyEntry(SQLModel, table=True):
 
     class Config:
         validate_assignment = True
+
+ ### ER Model Habit (Pls Enter here the new code)###
+
+
+ ### ER Model Wellness-Log  (Pls Enter here the new code) ###
+
+
+ ### Er Model Report (Pls Enter here the new code) ###
