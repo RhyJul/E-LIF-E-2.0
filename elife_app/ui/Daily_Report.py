@@ -17,50 +17,24 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
         if not user_id or not username:
             ui.navigate.to('/')
             return
-        
+
         ui.add_head_html('''
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-start: #0f172a;
-            --bg-end: #1f2937;
-            --card: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.18);
-            --accent: #f59e0b;
-            --text: #f8fafc;
-            --muted: #cbd5f5;
-        }
         body {
-            font-family: 'Source Sans 3', sans-serif;
-            background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
-                        radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
-                        linear-gradient(120deg, var(--bg-start), var(--bg-end));
-            color: var(--text);
+            @apply bg-orange-200;
         }
-        .dashboard-title {
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.3px;
-        }
-        .glass-card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            border-radius: 18px;
-        }
-        .pill-button .q-btn {
-            border-radius: 999px;
-        }
-        .muted-text { color: var(--muted); }
     </style>
 ''')
 
-        with ui.column().classes('w-full items-center gap-4 p-8 text-white'):
+        with ui.column().classes('w-full items-center gap-4 p-8 text-slate-900 min-h-screen'):
             ui.label(f'Daily report for {username}').classes(
-                'text-2xl font-bold')
+                'font-display text-2xl font-bold text-emerald-700')
             ui.button('Back to dashboard',
-                      on_click=lambda: ui.navigate.to('/dashboard'))
+                      on_click=lambda: ui.navigate.to('/dashboard')).classes('px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
 
             date_label = ui.label('')
             timestamp_label = ui.label('')
@@ -104,10 +78,10 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
 
                 if label == 'today':
                     date_label.set_text(
-                    f'Report for today ({entry.date.strftime("%d.%m.%Y")})')
+                        f'Report for today ({entry.date.strftime("%d.%m.%Y")})')
                 else:
                     date_label.set_text(
-                    f'Most recent entry ({entry.date.strftime("%d.%m.%Y")})')
+                        f'Most recent entry ({entry.date.strftime("%d.%m.%Y")})')
 
                 if entry.created_at:
                     stamp = entry.created_at.strftime('%d.%m.%Y %H:%M')
@@ -116,13 +90,14 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
                 timestamp_label.set_text(f'Logged at: {stamp}')
 
                 header = (
-                f"Feedback for entry dated {entry.date.strftime('%d.%m.%Y')} (logged {stamp})."
+                    f"Feedback for entry dated {entry.date.strftime('%d.%m.%Y')} (logged {stamp})."
                 )
 
                 report_body = format_advice_paragraphs(advice)
                 ui.markdown(f"**{header}**\n\n{report_body}")
 
-            ui.button('Refresh', on_click=refresh)
+            ui.button('Refresh', on_click=refresh).classes(
+                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
             refresh()
 
 

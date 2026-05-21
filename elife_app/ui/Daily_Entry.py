@@ -21,68 +21,42 @@ def create_daily_entry_page(database: Database | None = None) -> None:
         if not user_id or not username:
             ui.navigate.to('/')
             return
-        
+
         ui.add_head_html('''
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-start: #0f172a;
-            --bg-end: #1f2937;
-            --card: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.18);
-            --accent: #f59e0b;
-            --text: #f8fafc;
-            --muted: #cbd5f5;
-        }
         body {
-            font-family: 'Source Sans 3', sans-serif;
-            background: radial-gradient(1200px 600px at 10% -10%, #1e3a8a33, transparent),
-                        radial-gradient(1200px 700px at 90% 0%, #f59e0b22, transparent),
-                        linear-gradient(120deg, var(--bg-start), var(--bg-end));
-            color: var(--text);
+            @apply bg-orange-200;
         }
-        .dashboard-title {
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.3px;
-        }
-        .glass-card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            border-radius: 18px;
-        }
-        .pill-button .q-btn {
-            border-radius: 999px;
-        }
-        .muted-text { color: var(--muted); }
         .q-field__native, .q-field__label {
-            color: white !important;
+            color: #1f2937 !important;
         }
         .q-checkbox__label {
-            color: white !important;
+            color: #1f2937 !important;
         }
         .q-checkbox__inner {
-            color: #3b82f6 !important;
+            color: #10b981 !important;
         }
         .q-date__calendar-item button {
-            color: #0f172a !important;
+            color: #0f4c23 !important;
         }
         .q-date__header {
-            color: white !important;
+            color: #1f2937 !important;
         }
         .q-date__header * {
-            color: white !important;
+            color: #1f2937 !important;
         }
         .q-date__calendar-weekdays > div {
-            color: #0f172a !important;
+            color: #0f4c23 !important;
         }
         .q-date__navigation button {
-            color: #0f172a !important;
+            color: #0f4c23 !important;
         }
         .q-date__header-title, .q-date__header-subtitle {
-            color: white !important;
+            color: #1f2937 !important;
         }
     </style>
 ''')
@@ -91,10 +65,10 @@ def create_daily_entry_page(database: Database | None = None) -> None:
         db.init_schema()
         wellness = WellnessService()
 
-        with ui.column().classes('w-full items-center gap-4 p-8 text-white'):
-            
+        with ui.column().classes('w-full items-center gap-4 p-8 text-slate-900'):
+
             ui.button('Back to dashboard',
-                      on_click=lambda: ui.navigate.to('/dashboard'))
+                      on_click=lambda: ui.navigate.to('/dashboard')).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
             entries_container = ui.column().classes('w-full gap-2')
             avg_label = ui.label('')
@@ -128,80 +102,99 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                     return entry.created_at.strftime('%d.%m.%Y %H:%M')
 
                 def open_edit() -> None:
-                    with ui.dialog().classes('w-1/2') as dlg:
-                        ui.label('Edit entry').classes('text-lg font-medium')
-                        d_input = ui.input(
-                            label='Date', value=entry.date.isoformat())
-                        sleep_input = ui.number(
-                            label='Sleep quality', value=entry.sleep_quality)
-                        stress_input = ui.number(
-                            label='Stress', value=entry.stress)
-                        mood_input = ui.number(label='Mood', value=entry.mood)
-                        steps_input = ui.number(
-                            label='Steps', value=entry.steps)
-                        work_input = ui.number(
-                            label='Work hours', value=entry.work_hours)
+                    with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg w-96') as card:
+                        with ui.column():
+                            ui.label('Edit entry').classes(
+                                'text-lg font-medium')
+                            d_input = ui.input(
+                                label='Date', value=entry.date.strftime('%Y-%m-%d'))
+                            sleep_input = ui.number(
+                                label='Sleep quality', value=entry.sleep_quality)
+                            stress_input = ui.number(
+                                label='Stress', value=entry.stress)
+                            mood_input = ui.number(
+                                label='Mood', value=entry.mood)
+                            steps_input = ui.number(
+                                label='Steps', value=entry.steps)
+                            work_input = ui.number(
+                                label='Work hours', value=entry.work_hours)
 
-                        def save_edit() -> None:
-                            try:
-                                d = date.fromisoformat(d_input.value)
-                            except ValueError:
-                                ui.notify(
-                                    'Invalid date format, use YYYY-MM-DD', color='red')
-                                return
-
-                            with db.session_scope() as session:
-                                obj = session.get(DailyEntry, entry.id)
-                                if obj is None or obj.user_id != int(user_id):
+                            def save_edit() -> None:
+                                try:
+                                    d = date.fromisoformat(d_input.value)
+                                except ValueError:
                                     ui.notify(
-                                        'Entry not found for this user', color='red')
+                                        'Invalid date format, use YYYY-MM-DD', color='red')
                                     return
 
-                                obj.date = d
-                                obj.sleep_quality = int(sleep_input.value)
-                                obj.stress = int(stress_input.value)
-                                obj.mood = int(mood_input.value)
-                                obj.steps = int(steps_input.value)
-                                obj.work_hours = float(work_input.value)
-                                score, _ = wellness.calculate_score(obj)
-                                obj.score = score
-                                session.add(obj)
+                                with db.session_scope() as session:
+                                    obj = session.get(DailyEntry, entry.id)
+                                    if obj is None or obj.user_id != int(user_id):
+                                        ui.notify(
+                                            'Entry not found for this user', color='red')
+                                        return
 
-                            dlg.close()
-                            refresh()
+                                    obj.date = d
+                                    obj.sleep_quality = int(sleep_input.value)
+                                    obj.stress = int(stress_input.value)
+                                    obj.mood = int(mood_input.value)
+                                    obj.steps = int(steps_input.value)
+                                    obj.work_hours = float(work_input.value)
+                                    score, _ = wellness.calculate_score(obj)
+                                    obj.score = score
+                                    session.add(obj)
 
-                        ui.button('Save', on_click=save_edit)
-                        ui.button('Cancel', on_click=dlg.close)
-                    dlg.open()
+                                card.remove()
+                                refresh()
+
+                            with ui.row():
+                                ui.button('Save', on_click=save_edit).classes(
+                                    'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
+                                ui.button('Cancel', on_click=card.remove).classes(
+                                    'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
                 def delete_entry() -> None:
                     with db.session_scope() as session:
                         obj = session.get(DailyEntry, entry.id)
                         if obj and obj.user_id == int(user_id):
                             session.delete(obj)
+                            session.commit()
 
                     refresh()
 
-                with ui.row().classes('items-center justify-between w-full py-2 px-4 border rounded'):
-                    ui.label(
-                        f'{entry.date.strftime("%d.%m.%Y")} — score: {entry.score} — logged: {format_stamp()}')
-                    with ui.row():
-                        ui.button('Edit', on_click=open_edit)
-                        ui.button('Delete', on_click=delete_entry)
+                with entries_container:
+                    with ui.row().classes('items-center justify-between w-full py-2 px-4 border rounded'):
+                        ui.label(
+                            f'{entry.date.strftime("%d.%m.%Y")} — score: {entry.score} — logged: {format_stamp()}')
+                        with ui.row():
+                            ui.button('Edit', on_click=open_edit).classes(
+                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
+                            ui.button('Delete', on_click=delete_entry).classes(
+                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
             # Add new entry form
-            with ui.card().classes('glass-card text-white w-full'):
+            with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg text-slate-900 w-full'):
                 ui.label('Add new daily entry').classes('text-lg font-medium')
-                with ui.row().classes("gap-4 items-center"):
-                    with ui.input(label='Date (DD.MM.YYYY)', placeholder='31.01.2026') as date_input:
-                        with ui.menu() as menu:
-                            ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
-                    ui.icon('calendar_month').classes('cursor-pointer').on('click', menu.open)
-                sleep_input = ui.number(label='Sleep quality', value=5)
-                stress_input = ui.number(label='Stress', value=5)
-                mood_input = ui.number(label='Mood', value=5)
-                steps_input = ui.number(label='Steps', value=0)
-                work_input = ui.number(label='Work hours', value=0.0)
+                with ui.column().classes('gap-2'):
+                    ui.label('Date (DD.MM.YYYY)').classes(
+                        'text-sm font-medium')
+                    with ui.row().classes("gap-4 items-center"):
+                        with ui.input(placeholder='31.01.2026') as date_input:
+                            with ui.menu() as menu:
+                                ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(
+                                    e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
+                        ui.icon('calendar_month').classes(
+                            'cursor-pointer').on('click', menu.open)
+                    ui.label('Sleep quality').classes('text-sm font-medium')
+                    sleep_input = ui.number(value=5)
+                    ui.label('Stress').classes('text-sm font-medium')
+                    stress_input = ui.number(value=5)
+                    ui.label('Mood').classes('text-sm font-medium')
+                    mood_input = ui.number(value=5)
+                    ui.label('Steps').classes('text-sm font-medium')
+                    steps_input = ui.number(value=0)
+                    ui.label('Work hours').classes('text-sm font-medium')
+                    work_input = ui.number(value=0.0)
 
                 def add_entry() -> None:
                     try:
@@ -231,18 +224,34 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                     entry.score = score
 
                     with db.session_scope() as session:
+                        # Check if entry for this date already exists
+                        stmt = (
+                            select(DailyEntry)
+                            .where(DailyEntry.user_id == int(user_id))
+                            .where(DailyEntry.date == d.date())
+                        )
+                        existing_entry = session.exec(stmt).first()
+
+                        if existing_entry:
+                            ui.notify(
+                                'Entry for this date has already been submitted', type='warning')
+                            return
+
                         session.add(entry)
 
+                    ui.notify('Check-in submitted successfully!',
+                              type='positive')
                     date_input.set_value('')
                     refresh()
 
-                ui.button('Add entry', on_click=add_entry)
+                ui.button('Add entry', on_click=add_entry).classes(
+                    'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
             ui.separator()
             ui.label('Entries').classes('text-lg font-medium')
-            entries_container
             avg_label
-            ui.button('Refresh', on_click=refresh)
+            ui.button('Refresh', on_click=refresh).classes(
+                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
             refresh()
 
