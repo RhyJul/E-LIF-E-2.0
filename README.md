@@ -195,11 +195,13 @@ Each app must meet the following criteria in order to be accepted (see also the 
 
 The application interacts with the user via the browser. Users can:
 
-- Register and Login in to the Account / also logout
-- View the dashboard
-- Select daily entry and fill out form
-- Receive or view the daily and monthly review
-- Possibility to edit or delete the entry 
+- Choose if the user wants to Login or Register (Create an Account )
+- Enter Daily Check-in 
+- See Daily Reports 
+- See Monthly Reports 
+- Logout  
+- Delete and Edit Entry 
+- Receive a Feedback 
 
 **Architecture note (per SS26 guidelines):** the browser is a thin client; UI state + business logic live on the server-side NiceGUI app.
 
@@ -214,7 +216,7 @@ These checks prevent crashes and guide the user to provide correct input, matchi
 
 ### 3. Database Management
 
-All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the e-life app example this includes users, Daily entries, and Habit, Wellness_logi and report.
+All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the e-life app example this includes Users, Daily entries, Habit, Wellness_logic and report.
 
 ---
 
@@ -222,11 +224,12 @@ All relevant data is managed via an ORM (e.g. SQLModel or SQLAlchemy). For the e
 
 ### Technology
 
-- Python 3.x  
+- Python 3.11.15
 - NiceGUI  
 - SQLModel / SQLAlchemy  
 - ReportLab  
 - pytest  
+- tzdata
 
 ---
 
@@ -316,11 +319,12 @@ elife_app/
 
 > 🚧 Describe the usage of the main functions
 
-Order Pizza:
-1. Open the menu page and browse pizzas.
-2. Add items (with quantities) to the current order.
-3. Review total (incl. discounts) and validate inputs.
-4. Checkout to persist the order and generate the invoice.
+Record Daily Entry: 
+1. Log into Account 
+2. Choose “Start daily check-in” to record Today’s Entry 
+3. Fill out Entry  
+4. Submit Check-in 
+5. Receive a Feedback/Advise  
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
@@ -333,22 +337,408 @@ Order Pizza:
 
 > 🚧 Explain what you test and how to run tests.
 
-**Test mix:**
-- Overall 12 tests
-- 6 Unit tests: e.g. subtotal calculation, discount application above CHF 50, no discount at or below threshold, total calculation
-- 3 DB tests: e.g. menu query returns seeded pizzas, saving an order persists order + order items, empty DB / empty transactions behavior
-- 3 Integration tests: e.g. checkout with one pizza creates order and invoice, checkout with multiple pizzas applies discount correctly
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_001                                                                                                                              |
+| Test case title/description |  Verifies seeded data can be found and displayed.                                                                                   |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User has an account                                                                                                      |
+|                             | -          User has recorded for example already two daily entries                                                                  |
+| Test steps                  | 1.      Logging into account                                                                                                        |
+|                             | 2.      Go to “Monthly Reports” or “Manage Entries”                                                                                 |
+|                             | 3.      Two daily entries should be visible                                                                                         |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality (0-10)                                                                                                     |
+|                             | -          Stress (0-10)                                                                                                            |
+|                             | -          Mood (0-10)                                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake (0-5)                                                                                                       |
+|                             | -          Step count (0-50000)                                                                                                     |
+|                             | -          Work hours (0-16)                                                                                                        |
+|                             |                                                                                                                                     |
+|                             | Ticking the box:                                                                                                                    |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | User can track his daily reports and see them displayed.                                                                            |
+| Actual result               | User can track his daily reports and see them displayed.                                                                            |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_002                                                                                                                              |
+| Test case title/description | Test that a new User can be created and that the data can be retrieved with the correct values.                                     |
+|                             |                                                                                                                                     |
+| Preconditions               |                                                                                                                                     |
+| Test steps                  | 1.      Open login page                                                                                                             |
+|                             | 2.      Select “Register” (TC_005)                                                                                                  |
+|                             | 3.      Enter username (e.g. maxmueller)                                                                                            |
+|                             | 4.      Enter password (e.g. max123)                                                                                                |
+|                             | 5.      Select gender                                                                                                               |
+|                             | 6.      Click on create an account                                                                                                  |
+|                             | a.      Account is created                                                                                                          |
+|                             | 7.      Enter to login the username and password                                                                                    |
+|                             | 8.      Login accepted                                                                                                              |
+| Test data input             | Username: (e.g. maxmueller)                                                                                                         |
+|                             | Password: (e.g. max123)                                                                                                             |
+|                             | Gender: male/female                                                                                                                 |
+| Expected output             | New user is created and stored. User can now enter.                                                                                 |
+| Actual result               | New user is created and stored. User can now enter.                                                                                 |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_003                                                                                                                              |
+| Test case title/description | Verifies new data can be persisted and retrieved.                                                                                   |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User has clicked on “Start Daily Check-in”                                                                               |
+|                             | -          No daily entries have been recorded before                                                                               |
+| Test steps                  | 1.      Log into account (TC_004)                                                                                                   |
+|                             | 2.      Click on “Start Daily Check-in”                                                                                             |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Feedback/Advise are shown and wellness score is calculated                                                                  |
+|                             | 6.      Go to “Monthly Reports” or “Manage Entries”                                                                                 |
+|                             | 7.      Only one entry should be displayed                                                                                          |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality (0-10)                                                                                                     |
+|                             | -          Stress (0-10)                                                                                                            |
+|                             | -          Mood (0-10)                                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake (0-5)                                                                                                       |
+|                             | -          Step count (0-50000)                                                                                                     |
+|                             | -          Work hours (0-16)                                                                                                        |
+|                             |                                                                                                                                     |
+|                             | Ticking the box:                                                                                                                    |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | First daily entry is reported and is stored. User can find the entry in the monthly and daily report.                               |
+| Actual result               | First daily entry is reported and is stored. User can find the entry in the monthly and daily report.                               |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+| #Integration tests          |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_004                                                                                                                              |
+| Test case title/description | Verify that a user can log in with valid username and password.                                                                     |
+| Preconditions               | -          User is registered                                                                                                       |
+|                             | -          Login page is accessible                                                                                                 |
+| Test steps                  | 1.      Open login page                                                                                                             |
+|                             | 2.      Enter username (e.g. maxmueller)                                                                                            |
+|                             | 3.      Enter password (e.g. max123)                                                                                                |
+|                             | 4.      Click Login                                                                                                                 |
+| Test data input             | Username: (e.g. maxmueller)                                                                                                         |
+|                             | Password: (e.g. max123)                                                                                                             |
+| Expected output             | User is logged in successfully and dashboard is displayed                                                                           |
+| Actual result               | User is logged in successfully and dashboard is displayed                                                                           |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+| Field                       | Details                                                                                                                             |
+| Test case ID                | TC_005                                                                                                                              |
+| Test case title/description | Verify that a user can create an account with username, password and gender.                                                        |
+| Preconditions               | -          Login/Registration page is accessible                                                                                    |
+| Test steps                  | 1.      Open login page                                                                                                             |
+|                             | 2.      Select “Register”                                                                                                           |
+|                             | 3.      Enter username (e.g. maxmueller)                                                                                            |
+|                             | 4.      Enter password (e.g. max123)                                                                                                |
+|                             | 5.      Select gender                                                                                                               |
+|                             | 6.      Click on create an account                                                                                                  |
+| Test data input             | Username: (e.g. maxmueller)                                                                                                         |
+|                             | Password: (e.g. max123)                                                                                                             |
+|                             | Gender: male/female                                                                                                                 |
+| Expected output             | User has successfully created an account.                                                                                           |
+| Actual result               | User has successfully created an account.                                                                                           |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_006                                                                                                                              |
+| Test case title/description | Test that a single daily entry can be created and wellness score is calculated.                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User has chosen “Start Daily Check-in”                                                                                   |
+| Test steps                  | 1.      Log into account (TC_004)                                                                                                   |
+|                             | 2.      Click on “Start Daily Check-in”                                                                                             |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Feedback/Advise are shown and wellness score is calculated                                                                  |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality (0-10)                                                                                                     |
+|                             | -          Stress (0-10)                                                                                                            |
+|                             | -          Mood (0-10)                                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake (0-5)                                                                                                       |
+|                             | -          Step count (0-50000)                                                                                                     |
+|                             | -          Work hours (0-16)                                                                                                        |
+|                             |                                                                                                                                     |
+|                             | Ticking the box:                                                                                                                    |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | User has successfully recorded a daily entry.                                                                                       |
+| Actual result               | User has successfully recorded a daily entry.                                                                                       |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_007                                                                                                                              |
+| Test case title/description | Test that multiple entries can be created and monthly report is generated.                                                          |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          Several daily entries were recorded                                                                                      |
+|                             | -          “Monthly Report” has been chosen                                                                                         |
+| Test steps                  | 1.      Log into account (TC_004)                                                                                                   |
+|                             | 2.      Create several daily entries                                                                                                |
+|                             | a.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | b.     Go to “Manage Entries” and create a record an entry                                                                          |
+|                             |                                        i.      Click on “Add Entry”                                                                 |
+|                             | 3.      Click on “Monthly Report” to view all entries of the current month                                                          |
+|                             |                                                                                                                                     |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality (0-10)                                                                                                     |
+|                             | -          Stress (0-10)                                                                                                            |
+|                             | -          Mood (0-10)                                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake (0-5)                                                                                                       |
+|                             | -          Step count (0-50000)                                                                                                     |
+|                             | -          Work hours (0-16)                                                                                                        |
+|                             |                                                                                                                                     |
+|                             | Ticking the box:                                                                                                                    |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | User has successfully created several entries and can view them in the monthly report.                                              |
+| Actual result               | User has successfully created several entries and can view them in the monthly report.                                              |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+| #Unit tests                 |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_008                                                                                                                              |
+| Test case title/description | Verifies that the service correctly calculates a score when user has balanced, healthy habits (no period data).                     |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User has recorded daily entry                                                                                            |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Positive feedback is shown and wellness score is calculated                                                                 |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality > 6                                                                                                        |
+|                             | -          Stress < = 3                                                                                                             |
+|                             | -          Mood > 6                                                                                                                 |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake > = 2.0                                                                                                     |
+|                             | -          Step count > = 7000                                                                                                      |
+|                             | -          Work hours < = 8                                                                                                         |
+|                             |                                                                                                                                     |
+|                             | Some boxes are ticked:                                                                                                              |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | Daily report with positive feedback and advises has been successfully created.                                                      |
+| Actual result               | Daily report with positive feedback and advises has been successfully created.                                                      |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_009                                                                                                                              |
+| Test case title/description | Verifies the service correctly handles extreme conditions when all health metrics are at their worst (no period data).              |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User has recorded daily entry                                                                                            |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Feedback and advises are shown                                                                                              |
+|                             |                                                                                                                                     |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality < = 3                                                                                                      |
+|                             | -          Stress < = 6                                                                                                             |
+|                             | -          Mood < = 3                                                                                                               |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake < = 1.0                                                                                                     |
+|                             | -          Step count < = 3000                                                                                                      |
+|                             | -          Work hours < = 12                                                                                                        |
+|                             |                                                                                                                                     |
+|                             | None of the boxes are ticked:                                                                                                       |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+| Expected output             | User receives a daily report with advises.                                                                                          |
+| Actual result               | User receives a daily report with advises.                                                                                          |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_010                                                                                                                              |
+| Test case title/description | Verifies the service correctly calculates the highest possible score when all metrics are at maximum (no period data).              |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User has recorded daily entry                                                                                            |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Positive feedback is shown                                                                                                  |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality > 6                                                                                                        |
+|                             | -          Stress < = 3                                                                                                             |
+|                             | -          Mood > 6                                                                                                                 |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake > = 3.5                                                                                                     |
+|                             | -          Step count > = 12000                                                                                                     |
+|                             | -          Work hours < = 4                                                                                                         |
+|                             |                                                                                                                                     |
+|                             | All boxes are ticked, except period:                                                                                                |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+| Expected output             | Daily report with positive feedback has been successfully created.                                                                  |
+| Actual result               | Daily report with positive feedback has been successfully created.                                                                  |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+| Field                       | Details                                                                                                                             |
+| Test case ID                | TC_011                                                                                                                              |
+| Test case title/description | Verifies that the DailyEntry model validates ranges and raises errors for out-of-bounds health metrics or corrects these instantly. |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User clicked on “Start Daily Check-in”                                                                                   |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             |                                                                                                                                     |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality (0-10)                                                                                                     |
+|                             | -          Stress (0-10)                                                                                                            |
+|                             | -          Mood (0-10)                                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake (0-5) (e.g. 6)                                                                                              |
+|                             | -          Step count (0-50000) (e.g. 60000)                                                                                        |
+|                             | -          Work hours (0-16) (e.g. 20)                                                                                              |
+|                             |                                                                                                                                     |
+|                             | Ticking the box:                                                                                                                    |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+|                             | -          Are you on your period?                                                                                                  |
+|                             |                                                                                                                                     |
+| Expected output             | User input is directly corrected or receives an error message.                                                                      |
+| Actual result               | User input is directly corrected or receives an error message.                                                                      |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found.                                                                                                                    |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Field                       | Details                                                                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Test case ID                | TC_012                                                                                                                              |
+| Test case title/description | Verifies the service correctly records menstrual data (pain level, flow intensity) when user is on their period.                    |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User clicked on “Start Daily Check-in”                                                                                   |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      “Are you on your period?” needs to be ticked                                                                                |
+|                             | 4.      Pop-up window should appear                                                                                                 |
+|                             | 5.      User can enter period flow and period pain                                                                                  |
+| Test data input             | Ticking the box:                                                                                                                    |
+|                             | -          Are you on your period?                                                                                                  |
+|                             |                                                                                                                                     |
+|                             | Pop-up window:                                                                                                                      |
+|                             | -          Period flow (0-3)                                                                                                        |
+|                             | -          Period pain (0-10)                                                                                                       |
+|                             |                                                                                                                                     |
+| Expected output             | User receives a pop-up window to enter period flow and period pain.                                                                 |
+| Actual result               | User receives a pop-up window to enter period flow and period pain.                                                                 |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
+|                             |                                                                                                                                     |
+|                             |                                                                                                                                     |
+| Field                       | Details                                                                                                                             |
+| Test case ID                | TC_013                                                                                                                              |
+| Test case title/description | Verifies the service generates helpful feedback when sleep quality is low, even if other metrics are good.                          |
+|                             |                                                                                                                                     |
+| Preconditions               | -          User is logged in                                                                                                        |
+|                             | -          User clicked on “Start Daily Check-in”                                                                                   |
+| Test steps                  | 1.      Logging into account (TC_004)                                                                                               |
+|                             | 2.      Click on “Start Daily Check-in” (TC_006)                                                                                    |
+|                             | 3.      Fill out the daily check-in (filters, numbers, tick…)                                                                       |
+|                             | a.      Sleep quality should be the only part in Wellness-Service with a low number                                                 |
+|                             | 4.      Click on “Submit Check-in”                                                                                                  |
+|                             | 5.      Feedback and advises are shown                                                                                              |
+|                             |                                                                                                                                     |
+| Test data input             | Filters:                                                                                                                            |
+|                             | -          Sleep quality > 3                                                                                                        |
+|                             | -          Stress < = 3                                                                                                             |
+|                             | -          Mood > 6                                                                                                                 |
+|                             |                                                                                                                                     |
+|                             | Fill out:                                                                                                                           |
+|                             | -          Water intake > = 3.5                                                                                                     |
+|                             | -          Step count > = 12000                                                                                                     |
+|                             | -          Work hours < = 4                                                                                                         |
+|                             |                                                                                                                                     |
+|                             | All boxes are ticked, except period:                                                                                                |
+|                             | -          Did you see friends today?                                                                                               |
+|                             | -          Did you exercise today?                                                                                                  |
+|                             | -          Did you do a hobby today?                                                                                                |
+|                             | -          Did you take your meds today?                                                                                            |
+| Expected output             | User receives positive feedback except for the sleep quality.                                                                       |
+| Actual result               | User receives positive feedback except for the sleep quality.                                                                       |
+| Status                      | Pass                                                                                                                                |
+| Comments                    | No issues found                                                                                                                     |
 
-**Template for writing test cases**
-1. Test case ID – unique identifier (e.g., TC_001)
-2. Test case title/description – What is the test about?
-3. Preconditions: Requirements before executing the test
-4. Test steps: Actions to perform
-5. Test data/input
-6. Expected result
-7. Actual result
-8. Status – pass or fail
-9. Comments – Additional notes or defect found
 
 ---
 
@@ -358,9 +748,9 @@ Order Pizza:
 
 | Name      | Contribution |
 |-----------|--------------|
-| Berfin | OOP |
+| Berfin | OOP, NiceGui|
 | Laura | Testing |
-| Sarah | README |
+| Sarah | README, NiceGui, Team Management|
 | Toby | ORM (Database) |
 
 ---
