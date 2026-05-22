@@ -41,10 +41,30 @@ class DailyEntry(SQLModel, table=True):
     class Config:
         validate_assignment = True
 
- ### ER Model Habit (Pls Enter here the new code)###
+### ER Model Habit ###
+class Habit(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    code: str          # e.g. "sleep", "stress", "water_intake"
+    label: str         # human-readable name
+    value_type: str    # "number" or "bool"
+    value_number: Optional[float] = None
+    value_bool: Optional[int] = None
 
 
- ### ER Model Wellness-Log  (Pls Enter here the new code) ###
+### ER Model Wellness-Log ###
+class WellnessLog(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    score: int
+    algorithm_version: str = Field(default="1.0")
+    calculated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
- ### Er Model Report (Pls Enter here the new code) ###
+### Er Model Report ###
+class Report(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    report_type: str  # "daily", "weekly", "monthly"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    content: str = Field(default="")
