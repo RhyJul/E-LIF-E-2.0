@@ -3,6 +3,7 @@ from elife_app.data_access.dao import EntryDAO
 
 
 def create_reports_page(entry_dao: EntryDAO) -> None:
+    """Register the /reports page showing wellness reports."""
     @ui.page('/reports')
     def reports_page() -> None:
         username = app.storage.user.get('username')

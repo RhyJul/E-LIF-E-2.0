@@ -3,6 +3,7 @@ from elife_app.domain.models import User
 
 
 def create_login_page(user_dao) -> None:
+    """Register the /login and /register pages with NiceGUI."""
     @ui.page('/')
     def login_page() -> None:
         ui.add_head_html('''

@@ -7,8 +7,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 
 class WellnessService:
-
+    """Calculates the wellness score and personalized advice from a daily entry."""
     def calculate_score(self, entry: DailyEntry) -> tuple[int, list[str]]:
+        """Return the wellness score and a list of advice strings for the given entry."""
         score = (
             entry.sleep_quality +
             entry.mood +

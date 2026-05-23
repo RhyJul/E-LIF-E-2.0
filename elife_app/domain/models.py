@@ -5,6 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 ### ER Model User (Stays as it is// NO CHANGES)###
 class User(SQLModel, table=True):
+    """Represents a registered user of the wellness tracker."""
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
     password: str
@@ -14,6 +15,7 @@ class User(SQLModel, table=True):
 
 ### ER Model DailyEntry (Stays as it is// NO CHANGES) ###
 class DailyEntry(SQLModel, table=True):
+    """Represents one day's worth of wellness data for a user."""
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: Optional[int] = Field(
         default=None, foreign_key="user.id", index=True)
@@ -41,10 +43,33 @@ class DailyEntry(SQLModel, table=True):
     class Config:
         validate_assignment = True
 
- ### ER Model Habit (Pls Enter here the new code)###
+### ER Model Habit ###
+class Habit(SQLModel, table=True):
+    """Represents a single habit observation linked to a daily entry."""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    code: str          # e.g. "sleep", "stress", "water_intake"
+    label: str         # human-readable name
+    value_type: str    # "number" or "bool"
+    value_number: Optional[float] = None
+    value_bool: Optional[int] = None
 
 
- ### ER Model Wellness-Log  (Pls Enter here the new code) ###
+### ER Model Wellness-Log ###
+class WellnessLog(SQLModel, table=True):
+    """Stores the calculated wellness score for a daily entry."""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    score: int
+    algorithm_version: str = Field(default="1.0")
+    calculated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
- ### Er Model Report (Pls Enter here the new code) ###
+### Er Model Report ###
+class Report(SQLModel, table=True):
+    """Stores a generated wellness report for a daily entry."""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    report_type: str  # "daily", "weekly", "monthly"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    content: str = Field(default="")

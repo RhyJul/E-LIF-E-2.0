@@ -5,6 +5,7 @@ from elife_app.services.wellness_service import WellnessService
 
 
 def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
+    """Register the /dashboard page with the daily check-in form."""
     @ui.page('/dashboard')
     def dashboard_page() -> None:
         user_id = app.storage.user.get('user_id')

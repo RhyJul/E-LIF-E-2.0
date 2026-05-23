@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 
 def create_daily_entry_page(database: Database | None = None) -> None:
+    """Register the /daily-entry page for managing past wellness entries."""
     @ui.page('/daily-entry')
     def daily_entry_page() -> None:
         user_id = app.storage.user.get('user_id')

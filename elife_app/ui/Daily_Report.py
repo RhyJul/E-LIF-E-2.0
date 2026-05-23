@@ -9,6 +9,7 @@ from elife_app.services.wellness_service import WellnessService
 
 
 def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessService) -> None:
+    """Register the /daily-report page showing today's score and advice."""
     @ui.page('/daily-report')
     def daily_report_page() -> None:
         user_id = app.storage.user.get('user_id')
