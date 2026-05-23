@@ -9,6 +9,7 @@ from elife_app.services.wellness_service import WellnessService
 
 
 def create_monthly_report_page(entry_dao: EntryDAO) -> None:
+    """Register the /monthly-report page showing the last 28 days of entries."""
     @ui.page('/monthly-report')
     def monthly_report_page() -> None:
         user_id = app.storage.user.get('user_id')
