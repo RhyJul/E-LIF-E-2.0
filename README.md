@@ -751,12 +751,12 @@ Demo video (hosted): https://fhnw365-my.sharepoint.com/personal/laura_manni_stud
 
 > 🚧 Fill in the names of all team members and describe their individual contributions below.
 
-| Name      | Contribution |
-|-----------|--------------|
-| Berfin | OOP, NiceGui|
-| Laura | Testing, Powerpoint|
-| Sarah | README, NiceGui, Team Management|
-| Toby | ORM (Database) |
+| Name | Role      | Contribution |
+|-----------|----------|--------------|
+| Berfin |  Programmer  | Coding with focus on implementing OOP, NiceGui Design|
+| Laura | Tester | Testing, DB Seed, PowerPoint|
+| Sarah | Project Leading | Organizing, Meeting, Readme, ERM, NiceGui User Interface and Logic|
+| Toby | Programmer | Coding with focus on databases (ORM), NiceGui Implementing more Features|
 
 ---
 
