@@ -129,13 +129,29 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 > 🚧 Add screenshots of the wireframe mockups you chose to implement.
 
-![Wireframes – Home/Transactions](docs/ui-images/ui_login_screen.png)(docs/ui-images/ui_dashboar_screen.png)(docs/ui-images/ui_daily_report_screen.png)(docs/ui-images/ui_manage_entry_screen.png)(docs/ui-images/ui_manage_entry_screen_part_2.png)(docs/ui-images/ui_monthly_report_screen.png)
+![Wireframes – Login Screen](docs/ui-images/ui_login_screen.png)
+
+# E-Life App
+
+## Dashboard
+![Login](docs/ui-images/ui_dashboar_screen.png)
+
+## Dashboard
+![Dashboard](images/dashboard.png)
+
+## Report History
+![Report Daily](docs/ui-images/ui_daily_report_screen.png)
+![Report Monthly](docs/ui-images/ui_monthly_report_screen.png)
+
+## Manage Entries
+![Manage Entries 1](docs/ui-images/ui_manage_entry_screen.png)
+![Manage Entries 2](docs/ui-images/ui_manage_entry_screen_part_2.png)
 
 ---
 
 ## 🏛️ Architecture
 
-![UML Class Diagram](docs/architecture-diagrams/uml_class_architecture.png)
+![UML Class Diagram](docs/architecture-diagrams/E-Life_UML_diagramm.png)
 
 ### Layers
 - **UI:** NiceGUI (browser-based interface)  
