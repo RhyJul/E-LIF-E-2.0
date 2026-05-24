@@ -334,9 +334,8 @@ Record Daily Entry:
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
-Demo video (hosted): https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID
+Demo video (hosted): https://fhnw365-my.sharepoint.com/personal/laura_manni_students_fhnw_ch/_layouts/15/stream.aspx?id=%2Fpersonal%2Flaura%5Fmanni%5Fstudents%5Ffhnw%5Fch%2FDocuments%2FMicrosoft%20Teams%2DChatdateien%2FE%2DLife%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E793aede6%2D30be%2D4783%2D977d%2De82edb1f9a25&ct=1779650523368&or=Teams%2DHL&cid=7b578252%2D2a98%2D4dca%2Da838%2D077bcb9b7270&ga=1&LOF=1
 
-> Tip: Upload the demo as **Unlisted** on YouTube so everyone with the link can watch it.
 
 ---
 
