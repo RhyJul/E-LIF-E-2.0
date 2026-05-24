@@ -1,5 +1,5 @@
 from nicegui import ui, app
-from datetime import date
+from datetime import date, datetime
 from elife_app.domain.models import DailyEntry
 from elife_app.services.wellness_service import WellnessService
 
@@ -71,6 +71,15 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
             with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg w-full max-w-6xl p-6'):
                 with ui.expansion('Start daily check-in', icon='edit_note').classes('w-full'):
                     with ui.column().classes('gap-4'):
+                        # Optional entry date at top — can be left empty to use today
+                        with ui.row().classes("gap-4 items-center"):
+                            with ui.input(placeholder='31.01.2026') as date_input:
+                                with ui.menu() as menu:
+                                    ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(
+                                        e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
+                            ui.icon('calendar_month').classes(
+                                'cursor-pointer').on('click', menu.open)
+
                         sleep = ui.slider(min=0, max=10, value=5).props(
                             'label-always')
                         ui.label('Sleep quality (0-10)')
@@ -154,9 +163,21 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                                 period_flow_value = int(
                                     period_flow_input.value)
 
+                            # choose date: use provided date input if non-empty, otherwise today
+                            if date_input.value:
+                                try:
+                                    chosen_dt = datetime.strptime(
+                                        date_input.value, "%d.%m.%Y").date()
+                                except Exception:
+                                    ui.notify(
+                                        'Invalid date format, use DD.MM.YYYY', color='red')
+                                    return
+                            else:
+                                chosen_dt = date.today()
+
                             entry = DailyEntry(
                                 user_id=int(user_id),
-                                date=date.today(),
+                                date=chosen_dt,
                                 sleep_quality=int(sleep.value),
                                 stress=int(stress.value),
                                 mood=int(mood.value),
