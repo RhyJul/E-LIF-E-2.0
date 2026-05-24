@@ -346,9 +346,56 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                             ui.button('Delete', on_click=delete_entry).classes(
                                 'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
-            # Add new entry form (dashboard-style daily check-in)
-            gender = app.storage.user.get('gender')
-            is_female = gender == 'female'
+            # Add new entry form
+            with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg text-slate-900 w-full'):
+                ui.label('Add new daily entry').classes('text-lg font-medium')
+                with ui.column().classes('gap-2'):
+                    ui.label('Date (DD.MM.YYYY)').classes(
+                        'text-sm font-medium')
+                    with ui.row().classes("gap-4 items-center"):
+                        with ui.input(placeholder='31.01.2026') as date_input:
+                            with ui.menu() as menu:
+                                ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(
+                                    e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
+                        ui.icon('calendar_month').classes(
+                            'cursor-pointer').on('click', menu.open)
+                    ui.label('Sleep quality').classes('text-sm font-medium')
+                    sleep_input = ui.number(value=5)
+                    ui.label('Stress').classes('text-sm font-medium')
+                    stress_input = ui.number(value=5)
+                    ui.label('Mood').classes('text-sm font-medium')
+                    mood_input = ui.number(value=5)
+                    ui.label('Steps').classes('text-sm font-medium')
+                    steps_input = ui.number(value=0)
+                    ui.label('Work hours').classes('text-sm font-medium')
+                    work_input = ui.number(value=0.0)
+
+                def add_entry() -> None:
+                    try:
+                        d = datetime.strptime(date_input.value, "%d.%m.%Y")
+                    except ValueError:
+                        ui.notify(
+                            'Invalid date format, use DD.MM.YYYY', color='red')
+                        return
+
+                    entry = DailyEntry(
+                        user_id=int(user_id),
+                        date=d,
+                        sleep_quality=int(sleep_input.value),
+                        stress=int(stress_input.value),
+                        friends=0,
+                        water_intake=0.0,
+                        exercise=0,
+                        mood=int(mood_input.value),
+                        work_hours=float(work_input.value),
+                        hobbies=0,
+                        steps=int(steps_input.value),
+                        meds=0,
+                        period=0,
+                    )
+
+                    score, _ = wellness.calculate_score(entry)
+                    entry.score = score
 
             with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg text-slate-900 w-full'):
                 with ui.expansion('Start daily check-in', icon='edit_note').classes('w-full'):

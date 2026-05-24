@@ -79,13 +79,13 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
 
                 for entry in entries:
                     stamp = (
-                        entry.created_at.strftime('%Y-%m-%d %H:%M')
+                        entry.created_at.strftime('%d.%m.%Y %H:%M')
                         if entry.created_at
                         else 'unknown'
                     )
                     score, advice = WellnessService().calculate_score(entry)
                     header = (
-                        f"Feedback for entry dated {entry.date.isoformat()} (logged {stamp})."
+                        f"Feedback for entry dated {entry.date.strftime('%d.%m.%Y')} (logged {stamp})."
                     )
                     body = format_advice_paragraphs(advice)
                     with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg w-full'):
