@@ -332,8 +332,6 @@ Record Daily Entry:
 5. Receive a Feedback/Advise  
 
 
-![Steps with Video](https://teams.microsoft.com/meet/320862362859146?p=PekkrKWwcOmiyeUxfE)
-
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
 Demo video (hosted): https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID
