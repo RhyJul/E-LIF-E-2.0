@@ -16,13 +16,15 @@ class Database:
     """Database facade (engine + schema init + session scope)."""
 
     def __init__(
-        self, database_url: Optional[str] = None, *, echo: bool = False
-    ) -> None:
-        self._database_url = (
-            database_url or os.getenv("DATABASE_URL") or self._default_sqlite_url()
-        )
+            self,
+            database_url: Optional[str] = None,
+            *,
+            echo: bool = False) -> None:
+        self._database_url = database_url or os.getenv(
+            "DATABASE_URL") or self._default_sqlite_url()
         self._engine: Engine = create_engine(
-            self._database_url, echo=echo, connect_args={"check_same_thread": False}
+            self._database_url, echo=echo, connect_args={
+                "check_same_thread": False}
         )
 
     @staticmethod
@@ -59,10 +61,7 @@ class Database:
                 if column_name in existing:
                     continue
                 connection.execute(
-                    text(
-                        f"ALTER TABLE dailyentry ADD COLUMN {column_name} {column_type}"
-                    )
-                )
+                    text(f"ALTER TABLE dailyentry ADD COLUMN {column_name} {column_type}"))
             connection.commit()
 
     @contextmanager
@@ -79,7 +78,10 @@ class Database:
             session.close()
 
 
-def create_db(database_url: Optional[str] = None, *, echo: bool = False) -> Database:
+def create_db(
+        database_url: Optional[str] = None,
+        *,
+        echo: bool = False) -> Database:
     """Convenience wrapper used by the application to ensure the schema exists.
 
     Returns the created `Database` instance.

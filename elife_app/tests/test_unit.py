@@ -2,6 +2,7 @@ from elife_app.domain.models import DailyEntry
 from elife_app.services.wellness_service import WellnessService
 from datetime import date
 
+
 # ============================================================================
 # IMPORTANT: How to Run These Tests
 # =========================================================================
@@ -234,7 +235,7 @@ def test_advice_for_low_sleep():
 
     entry = DailyEntry(
         date=date(2025, 1, 20),
-        sleep_quality=2,  # Poor sleep
+        sleep_quality=2,       # Poor sleep
         stress=3,
         friends=1,
         water_intake=4.0,
@@ -252,6 +253,5 @@ def test_advice_for_low_sleep():
     # Check that advice is provided and mentions sleep-related guidance
     assert isinstance(advice, list), "Advice should be a list"
     assert len(advice) > 0, "Low sleep should generate advice"
-    assert any(
-        "sleep" in str(msg).lower() for msg in advice
-    ), "Advice should mention sleep issues"
+    assert any("sleep" in str(msg).lower()
+               for msg in advice), "Advice should mention sleep issues"

@@ -40,7 +40,7 @@ def seeded_db(db):
             steps=8000,
             meds=1,
             period=0,
-            score=75,
+            score=75
         ),
         DailyEntry(
             date=date(2025, 1, 2),
@@ -55,7 +55,7 @@ def seeded_db(db):
             steps=5000,
             meds=1,
             period=0,
-            score=65,
+            score=65
         ),
     ]
     db.add_all(entries)

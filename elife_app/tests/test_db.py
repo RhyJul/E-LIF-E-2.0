@@ -42,12 +42,12 @@ def test_query_seeded_daily_entries(seeded_db):
     assert entries[0].mood == 7, "First entry mood should be 7"
 
     # Verify second entry properties
-    assert entries[1].date == date(2025, 1, 2), "Second entry date should match"
+    assert entries[1].date == date(
+        2025, 1, 2), "Second entry date should match"
     assert entries[1].sleep_quality == 7, "Second entry sleep quality should be 7"
 
 
 # ==================== TEST 2: Create and Persist User ====================
-
 
 def test_create_and_persist_user(db):
     """
@@ -58,7 +58,9 @@ def test_create_and_persist_user(db):
     """
     # Create a new user
     user = User(
-        username="alice@example.com", password="securepassword123", gender="female"
+        username="alice@example.com",
+        password="securepassword123",
+        gender="female"
     )
 
     # Add and save to database
@@ -83,7 +85,6 @@ def test_create_and_persist_user(db):
 
 # ==================== TEST 3: Save DailyEntry and Retrieve by Date ======
 
-
 def test_save_daily_entry_and_retrieve_by_date(db):
     """
     Test that a new DailyEntry can be saved and retrieved by specific date.
@@ -105,7 +106,7 @@ def test_save_daily_entry_and_retrieve_by_date(db):
         steps=10000,
         meds=1,
         period=0,
-        score=75,
+        score=75
     )
 
     # Save to database
