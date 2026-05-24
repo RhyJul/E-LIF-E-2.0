@@ -127,14 +127,9 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ### Wireframes / Mockups
 
-> 🚧 Add screenshots of the wireframe mockups you chose to implement.
+## Login
 
 ![Wireframes – Login Screen](docs/ui-images/ui_login_screen.png)
-
-# E-Life App
-
-## Dashboard
-![Dashboard](docs/ui-images/ui_dashboard_screen.png)
 
 ## Dashboard
 ![Dashboard](docs/ui-images/ui_dashboard_screen.png)
@@ -195,8 +190,6 @@ The application uses **SQLModel** to map domain objects to a SQLite database.
 
 ---
 
-> 🚧 Requirements act as a contract: implement and demonstrate each point below.
-
 Each app must meet the following criteria in order to be accepted (see also the official project guidelines PDF on Moodle):
 
 1. Using NiceGUI for building an interactive web app
@@ -207,7 +200,6 @@ Each app must meet the following criteria in order to be accepted (see also the 
 
 ### 1. Browser-based App (NiceGUI)
 
-> 🚧 In this section, document how your project fulfills each criterion.
 
 The application interacts with the user via the browser. Users can:
 
@@ -293,13 +285,13 @@ elife_app/
 │   └── Monthly_Report.py
 ├── __init__.py
 └── application.py
+main.py
 
 ```
 ---
 
 ### How to Run
 
-> 🚧 Adjust to your project.
 
 ### 1. Project Setup
 - Python 3.11.15 (or the course version) is required
@@ -331,7 +323,6 @@ elife_app/
 
 ### 4. Usage (document as steps)
 
-> 🚧 Describe the usage of the main functions
 
 Record Daily Entry: 
 1. Log into Account 
@@ -339,6 +330,9 @@ Record Daily Entry:
 3. Fill out Entry  
 4. Submit Check-in 
 5. Receive a Feedback/Advise  
+
+
+![Steps with Video](https://teams.microsoft.com/meet/320862362859146?p=PekkrKWwcOmiyeUxfE)
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
@@ -348,7 +342,6 @@ Record Daily Entry:
 
 ## 🧪 Testing
 
-> 🚧 Explain what you test and how to run tests.
 
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Field                       | Details                                                                                                                             |
