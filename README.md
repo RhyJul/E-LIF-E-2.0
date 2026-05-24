@@ -336,7 +336,9 @@ Record Daily Entry:
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
- 
+Demo video (hosted): https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID
+
+> Tip: Upload the demo as **Unlisted** on YouTube so everyone with the link can watch it.
 
 ---
 
