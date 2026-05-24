@@ -1,9 +1,13 @@
 from typing import List, Optional
 from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from sqlmodel import SQLModel, Field, Relationship
 # Use Python 3.11.15 for sqlmodel otherwise an error will occur when running the app.
 
-### ER Model User (Stays as it is// NO CHANGES)###
+def swiss_time():
+    """Return the current time in the Swiss timezone."""
+    return datetime.now(ZoneInfo("Europe/Zurich"))
+
 class User(SQLModel, table=True):
     """Represents a registered user of the wellness tracker."""
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -13,13 +17,12 @@ class User(SQLModel, table=True):
 
     daily_entries: List["DailyEntry"] = Relationship(back_populates="user")
 
-### ER Model DailyEntry (Stays as it is// NO CHANGES) ###
 class DailyEntry(SQLModel, table=True):
     """Represents one day's worth of wellness data for a user."""
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: Optional[int] = Field(
         default=None, foreign_key="user.id", index=True)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=swiss_time)
     date: date
     sleep_quality: int = Field(ge=0, le=10)
     stress: int = Field(ge=0, le=10)
@@ -43,7 +46,6 @@ class DailyEntry(SQLModel, table=True):
     class Config:
         validate_assignment = True
 
-### ER Model Habit ###
 class Habit(SQLModel, table=True):
     """Represents a single habit observation linked to a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -54,22 +56,18 @@ class Habit(SQLModel, table=True):
     value_number: Optional[float] = None
     value_bool: Optional[int] = None
 
-
-### ER Model Wellness-Log ###
 class WellnessLog(SQLModel, table=True):
     """Stores the calculated wellness score for a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
     daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
     score: int
     algorithm_version: str = Field(default="1.0")
-    calculated_at: datetime = Field(default_factory=datetime.utcnow)
+    calculated_at: datetime = Field(default_factory=swiss_time)
 
-
-### Er Model Report ###
 class Report(SQLModel, table=True):
     """Stores a generated wellness report for a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
     daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
     report_type: str  # "daily", "weekly", "monthly"
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=swiss_time)
     content: str = Field(default="")

@@ -125,7 +125,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                     d = date.fromisoformat(d_input.value)
                                 except ValueError:
                                     ui.notify(
-                                        'Invalid date format, use YYYY-MM-DD', color='red')
+                                        'Invalid date format, use DD.MM.YYYY', color='red')
                                     return
 
                                 with db.session_scope() as session:
@@ -202,7 +202,7 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                         d = datetime.strptime(date_input.value, "%d.%m.%Y")
                     except ValueError:
                         ui.notify(
-                            'Invalid date format, use YYYY-MM-DD', color='red')
+                            'Invalid date format, use DD.MM.YYYY', color='red')
                         return
 
                     entry = DailyEntry(
