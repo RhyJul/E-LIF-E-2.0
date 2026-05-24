@@ -43,7 +43,7 @@ The application allows users to:
 **As a user, I want to answer simple daily questions in ≤ 60 seconds so that tracking is efficient.**
 
 - **Inputs:** health data (see below)
-- **Outputs:** wellness score (0–100), feedback
+- **Outputs:** feedback (according to the wellness score).
 
 ---
 
@@ -270,13 +270,11 @@ elife_app/
 │   └── test_unit.py
 |
 └── ui/
-│   ├── __init__.py....
 │   ├── Daily_Entry.py
 |   ├── Daily_Report.py
 │   ├── Dashboard.py
 │   ├── Login_Register.py
-│   ├── Monthly_Report.py
-│   └── pages.py......
+│   └── Monthly_Report.py
 ├── __init__.py
 └── application.py
 
@@ -288,7 +286,7 @@ elife_app/
 > 🚧 Adjust to your project.
 
 ### 1. Project Setup
-- Python 3.13 (or the course version) is required
+- Python 3.11.15 (or the course version) is required
 - Create and activate a virtual environment:
    - **macOS/Linux:**
       ```bash
@@ -305,13 +303,13 @@ elife_app/
    pip install -r requirements.txt
    ```
 
-### 2. Configuration
+### 2. Configuration **
 - E.g., setup of parameters or environment variables
 
 ### 3. Launch
 - Start the NiceGUI app (example):
    ```bash
-   py -m pizza_app
+   py -m elife_app
    ```
 - Open the URL printed in the console.
 
@@ -749,7 +747,7 @@ Record Daily Entry:
 | Name      | Contribution |
 |-----------|--------------|
 | Berfin | OOP, NiceGui|
-| Laura | Testing |
+| Laura | Testing, Powerpoint|
 | Sarah | README, NiceGui, Team Management|
 | Toby | ORM (Database) |
 
