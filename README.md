@@ -134,14 +134,14 @@ I want to have an own account so that it would be personalised to my lifestyle o
 # E-Life App
 
 ## Dashboard
-![Login](docs/ui-images/ui_dashboar_screen.png)
+![Dashboard](docs/ui-images/ui_dashboard_screen.png)
 
 ## Dashboard
-![Dashboard](images/dashboard.png)
+![Dashboard](docs/ui-images/ui_dashboard_screen.png)
 
 ## Report History
 ![Report Daily](docs/ui-images/ui_daily_report_screen.png)
-![Report Monthly](docs/ui-images/ui_monthly_report_screen.png)
+![Report Monthly](docs/ui-images/ui_monthy_report_screen.png)
 
 ## Manage Entries
 ![Manage Entries 1](docs/ui-images/ui_manage_entry_screen.png)
@@ -151,7 +151,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 ## 🏛️ Architecture
 
-![UML Class Diagram](docs/architecture-diagrams/E-Life_UML_diagramm.png)
+![UML Class Diagram](docs/architecture-diagrams/E-Life_UML_diagramm.jpg)
 
 ### Layers
 - **UI:** NiceGUI (browser-based interface)  
@@ -342,8 +342,7 @@ Record Daily Entry:
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
-![UI – Checkout](docs/ui-images/ui_checkout_screen.png)
-![UI – Past Transactions](docs/ui-images/ui_past_transactions_screen.png)
+ 
 
 ---
 
