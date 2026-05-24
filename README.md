@@ -159,9 +159,9 @@ I want to have an own account so that it would be personalised to my lifestyle o
 - **Persistence:** SQLite + ORM + data access (DAO)  
 
 ### Design Decisions
-- MVC structure (Model–View–Controller)
-- Clear separation of concerns
-- Business logic independent of UI
+- Layered architecture inspired by MVC (Model, UI Views, and controller-like page handlers)
+- Partial separation of concerns via dedicated domain models, service logic, and DAO-based persistence
+- Core wellness scoring logic implemented UI-agnostically in the service layer, while some flow and formatting logic remains in UI modules
 
 ### Patterns Used
 - MVC  
@@ -342,7 +342,9 @@ Record Daily Entry:
 
 > 🚧 Add UI screenshots of the main screens (or a short video link):
 
- 
+Demo video (hosted): https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID
+
+> Tip: Upload the demo as **Unlisted** on YouTube so everyone with the link can watch it.
 
 ---
 
