@@ -12,14 +12,14 @@ class WellnessService:
     def calculate_score(self, entry: DailyEntry) -> tuple[int, list[str]]:
         """Return the wellness score and a list of advice strings for the given entry."""
         score = (
-            entry.sleep_quality +
-            entry.mood +
-            entry.friends * 10 +
-            entry.exercise * 10 +
-            entry.hobbies * 10 +
-            entry.meds * 10 +
-            min(entry.steps // 5000, 10) +
-            min(int(entry.water_intake), 10)
+            entry.sleep_quality
+            + entry.mood
+            + entry.friends * 10
+            + entry.exercise * 10
+            + entry.hobbies * 10
+            + entry.meds * 10
+            + min(entry.steps // 5000, 10)
+            + min(int(entry.water_intake), 10)
         )
 
         advice = []
@@ -51,8 +51,7 @@ class WellnessService:
                 "Okay, you slept… but we both know you can do better. A cozy routine would help."
             )
         else:
-            advice.append(
-                "Sleeping beauty behavior! Your body said thank you today.")
+            advice.append("Sleeping beauty behavior! Your body said thank you today.")
 
         if entry.mood <= 3:
             advice.append(
@@ -82,10 +81,10 @@ class WellnessService:
             )
         elif entry.water_intake <= 2.0:
             advice.append(
-                "Not terrible, but your water bottle deserves more attention.")
+                "Not terrible, but your water bottle deserves more attention."
+            )
         elif entry.water_intake <= 3.5:
-            advice.append(
-                "Hydrated queen! Your skin, brain, and body are clapping.")
+            advice.append("Hydrated queen! Your skin, brain, and body are clapping.")
         else:
             advice.append(
                 "Okay hydration superstar, just keep it balanced and listen to your body."
@@ -96,11 +95,11 @@ class WellnessService:
                 "Your steps were a little shy today. A cute little walk could fix that."
             )
         elif entry.steps <= 7000:
-            advice.append(
-                "You moved, and we respect that. Tomorrow we level up.")
+            advice.append("You moved, and we respect that. Tomorrow we level up.")
         elif entry.steps <= 12000:
             advice.append(
-                "Look at you getting those steps in! Fitness girl era unlocked.")
+                "Look at you getting those steps in! Fitness girl era unlocked."
+            )
         else:
             advice.append(
                 "You were basically booked and busy on foot today. Rest those legs, queen."
@@ -112,7 +111,8 @@ class WellnessService:
             )
         elif entry.work_hours <= 8:
             advice.append(
-                "Balanced workday energy. Productive but not destroyed — we love.")
+                "Balanced workday energy. Productive but not destroyed — we love."
+            )
         elif entry.work_hours <= 12:
             advice.append(
                 "You worked a lot today. Ambitious queen, but breaks are not optional."
@@ -122,14 +122,15 @@ class WellnessService:
                 "Absolutely not, bestie. That is too much work energy. Recovery is required."
             )
 
-        lifestyle_on = "Healthy habit completed! She is organized, disciplined, and glowing."
-        lifestyle_off = "No healthy habit today? It happens. Tomorrow we make one tiny comeback."
-        advice.append(
-            f"Friends: {lifestyle_on if entry.friends else lifestyle_off}")
-        advice.append(
-            f"Exercise: {lifestyle_on if entry.exercise else lifestyle_off}")
-        advice.append(
-            f"Hobbies: {lifestyle_on if entry.hobbies else lifestyle_off}")
+        lifestyle_on = (
+            "Healthy habit completed! She is organized, disciplined, and glowing."
+        )
+        lifestyle_off = (
+            "No healthy habit today? It happens. Tomorrow we make one tiny comeback."
+        )
+        advice.append(f"Friends: {lifestyle_on if entry.friends else lifestyle_off}")
+        advice.append(f"Exercise: {lifestyle_on if entry.exercise else lifestyle_off}")
+        advice.append(f"Hobbies: {lifestyle_on if entry.hobbies else lifestyle_off}")
         advice.append(f"Meds: {lifestyle_on if entry.meds else lifestyle_off}")
 
         if entry.period_pain is not None:
@@ -149,10 +150,12 @@ class WellnessService:
         if entry.period_flow is not None:
             if entry.period_flow == 1:
                 advice.append(
-                    "Light flow today. Manageable, cute, and not too chaotic.")
+                    "Light flow today. Manageable, cute, and not too chaotic."
+                )
             elif entry.period_flow == 2:
                 advice.append(
-                    "Medium flow today. Stay prepared, stay comfy, stay iconic.")
+                    "Medium flow today. Stay prepared, stay comfy, stay iconic."
+                )
             elif entry.period_flow == 3:
                 advice.append(
                     "Strong flow today. Emergency chocolate, comfy pants, and extra care recommended."

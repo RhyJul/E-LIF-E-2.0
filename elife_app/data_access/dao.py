@@ -70,9 +70,7 @@ class UserDAO(BaseDAO):
 
     def get_by_username(self, username: str) -> Optional[User]:
         with self.session() as session:
-            user = session.exec(
-                select(User).where(
-                    User.username == username)).first()
+            user = session.exec(select(User).where(User.username == username)).first()
             if user:
                 make_transient(user)
             return user
@@ -84,6 +82,7 @@ class WellnessDAO:
     def __init__(self, engine: Engine | None = None) -> None:
         if engine is None:
             from elife_app.data_access.db import Database
+
             db = Database()
             self.engine = db.engine
         else:

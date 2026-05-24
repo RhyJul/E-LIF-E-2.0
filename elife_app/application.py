@@ -37,11 +37,10 @@ class ElifeApplication:
         create_monthly_report_page(self.entry_dao)
 
     def run(
-            self,
-            host: str = "0.0.0.0",
-            port: int = 8080,
-            reload: bool = False) -> None:
+        self, host: str = "0.0.0.0", port: int = 8080, reload: bool = False
+    ) -> None:
         """Run the NiceGUI application."""
+
         def _find_free_port() -> int:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.bind((host if host else "", 0))
@@ -61,5 +60,4 @@ class ElifeApplication:
             print(f"Port {port} in use, starting on free port {use_port}")
 
         # Call ui.run only once to avoid 'Cannot add middleware after started'.
-        ui.run(host=host, port=use_port, reload=reload,
-               storage_secret="elife_secret")
+        ui.run(host=host, port=use_port, reload=reload, storage_secret="elife_secret")

@@ -4,7 +4,6 @@ from elife_app.data_access.dao import EntryDAO, UserDAO, WellnessDAO
 from elife_app.domain.models import DailyEntry, User
 from elife_app.services.wellness_service import WellnessService
 
-
 # ============================================================================
 # IMPORTANT: How to Run These Tests
 # =========================================================================
@@ -54,10 +53,7 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
 
     entries_data = [
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                8),
+            date=date(2025, 1, 8),
             sleep_quality=7,
             stress=4,
             friends=1,
@@ -68,12 +64,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=8000,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                9),
+            date=date(2025, 1, 9),
             sleep_quality=8,
             stress=3,
             friends=1,
@@ -84,12 +78,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=9000,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                10),
+            date=date(2025, 1, 10),
             sleep_quality=6,
             stress=6,
             friends=0,
@@ -100,12 +92,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=0,
             steps=5000,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                11),
+            date=date(2025, 1, 11),
             sleep_quality=9,
             stress=2,
             friends=1,
@@ -116,12 +106,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=10000,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                12),
+            date=date(2025, 1, 12),
             sleep_quality=7,
             stress=5,
             friends=1,
@@ -132,12 +120,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=8500,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                13),
+            date=date(2025, 1, 13),
             sleep_quality=8,
             stress=4,
             friends=0,
@@ -148,12 +134,10 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=9500,
             meds=1,
-            period=0),
+            period=0,
+        ),
         DailyEntry(
-            date=date(
-                2025,
-                1,
-                14),
+            date=date(2025, 1, 14),
             sleep_quality=7,
             stress=3,
             friends=1,
@@ -164,7 +148,8 @@ def test_create_multiple_entries_generates_weekly_report(database, db):
             hobbies=1,
             steps=8000,
             meds=1,
-            period=0),
+            period=0,
+        ),
     ]
 
     created_entries = [entry_dao.create(e) for e in entries_data]

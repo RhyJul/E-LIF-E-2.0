@@ -2,6 +2,7 @@ from typing import List, Optional
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 from sqlmodel import SQLModel, Field, Relationship
+
 # Use Python 3.11.15 for sqlmodel otherwise an error will occur when
 # running the app.
 
@@ -13,6 +14,7 @@ def swiss_time():
 
 class User(SQLModel, table=True):
     """Represents a registered user of the wellness tracker."""
+
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
     password: str
@@ -23,9 +25,9 @@ class User(SQLModel, table=True):
 
 class DailyEntry(SQLModel, table=True):
     """Represents one day's worth of wellness data for a user."""
+
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: Optional[int] = Field(
-        default=None, foreign_key="user.id", index=True)
+    user_id: Optional[int] = Field(default=None, foreign_key="user.id", index=True)
     created_at: datetime = Field(default_factory=swiss_time)
     date: date
     sleep_quality: int = Field(ge=0, le=10)
@@ -40,9 +42,11 @@ class DailyEntry(SQLModel, table=True):
     meds: int = Field(ge=0, le=1)
     period: int = Field(ge=0, le=1)
     period_pain: Optional[int] = Field(
-        default=None, ge=0, le=10)  # Only relevant if period == 1
+        default=None, ge=0, le=10
+    )  # Only relevant if period == 1
     period_flow: Optional[int] = Field(
-        default=None, ge=0, le=3)  # Only relevant if period == 1
+        default=None, ge=0, le=3
+    )  # Only relevant if period == 1
     score: int = Field(default=0)
 
     user: Optional[User] = Relationship(back_populates="daily_entries")
@@ -53,21 +57,21 @@ class DailyEntry(SQLModel, table=True):
 
 class Habit(SQLModel, table=True):
     """Represents a single habit observation linked to a daily entry."""
+
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(
-        default=None, foreign_key="dailyentry.id")
-    code: str          # e.g. "sleep", "stress", "water_intake"
-    label: str         # human-readable name
-    value_type: str    # "number" or "bool"
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    code: str  # e.g. "sleep", "stress", "water_intake"
+    label: str  # human-readable name
+    value_type: str  # "number" or "bool"
     value_number: Optional[float] = None
     value_bool: Optional[int] = None
 
 
 class WellnessLog(SQLModel, table=True):
     """Stores the calculated wellness score for a daily entry."""
+
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(
-        default=None, foreign_key="dailyentry.id")
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
     score: int
     algorithm_version: str = Field(default="1.0")
     calculated_at: datetime = Field(default_factory=swiss_time)
@@ -75,9 +79,9 @@ class WellnessLog(SQLModel, table=True):
 
 class Report(SQLModel, table=True):
     """Stores a generated wellness report for a daily entry."""
+
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(
-        default=None, foreign_key="dailyentry.id")
+    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
     report_type: str  # "daily", "weekly", "monthly"
     created_at: datetime = Field(default_factory=swiss_time)
     content: str = Field(default="")
