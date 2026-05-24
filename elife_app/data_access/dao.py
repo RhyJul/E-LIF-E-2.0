@@ -11,6 +11,7 @@ from elife_app.domain.models import DailyEntry, User
 
 class BaseDAO:
     """Base class providing the shared database engine and session helper."""
+
     def __init__(self, engine: Engine) -> None:
         self.engine = engine
 
@@ -20,6 +21,7 @@ class BaseDAO:
 
 class EntryDAO(BaseDAO):
     """Data access object for reading and writing daily wellness entries."""
+
     def create(self, entry: DailyEntry) -> DailyEntry:
         with self.session() as session:
             session.add(entry)
@@ -57,6 +59,7 @@ class EntryDAO(BaseDAO):
 
 class UserDAO(BaseDAO):
     """Data access object for managing user accounts."""
+
     def create(self, user: User) -> User:
         with self.session() as session:
             session.add(user)
@@ -67,7 +70,9 @@ class UserDAO(BaseDAO):
 
     def get_by_username(self, username: str) -> Optional[User]:
         with self.session() as session:
-            user = session.exec(select(User).where(User.username == username)).first()
+            user = session.exec(
+                select(User).where(
+                    User.username == username)).first()
             if user:
                 make_transient(user)
             return user
@@ -75,6 +80,7 @@ class UserDAO(BaseDAO):
 
 class WellnessDAO:
     """Higher-level DAO used by the CLI app."""
+
     def __init__(self, engine: Engine | None = None) -> None:
         if engine is None:
             from elife_app.data_access.db import Database

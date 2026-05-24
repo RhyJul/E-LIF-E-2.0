@@ -83,7 +83,7 @@ def test_create_and_persist_user(db):
     assert query_user.gender == "female", "Gender should match"
 
 
-# ==================== TEST 3: Save DailyEntry and Retrieve by Date ====================
+# ==================== TEST 3: Save DailyEntry and Retrieve by Date ======
 
 def test_save_daily_entry_and_retrieve_by_date(db):
     """

@@ -8,7 +8,8 @@ from elife_app.data_access.dao import EntryDAO
 from elife_app.services.wellness_service import WellnessService
 
 
-def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessService) -> None:
+def create_daily_report_page(entry_dao: EntryDAO,
+                             wellness_service: WellnessService) -> None:
     """Register the /daily-report page showing today's score and advice."""
     @ui.page('/daily-report')
     def daily_report_page() -> None:
@@ -34,15 +35,17 @@ def create_daily_report_page(entry_dao: EntryDAO, wellness_service: WellnessServ
         with ui.column().classes('w-full items-center gap-4 p-8 text-slate-900 min-h-screen'):
             ui.label(f'Daily report for {username}').classes(
                 'font-display text-2xl font-bold text-emerald-700')
-            ui.button('Back to dashboard',
-                      on_click=lambda: ui.navigate.to('/dashboard')).classes('px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+            ui.button('Back to dashboard', on_click=lambda: ui.navigate.to('/dashboard')).classes(
+                'px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
 
             date_label = ui.label('')
             timestamp_label = ui.label('')
             score_label = ui.label('')
             advice_container = ui.column().classes('w-full gap-2')
 
-            def format_advice_paragraphs(items: list[str], chunk_size: int = 3) -> str:
+            def format_advice_paragraphs(
+                    items: list[str],
+                    chunk_size: int = 3) -> str:
                 if not items:
                     return "No recommendations for today. Keep it up!"
                 paragraphs = []

@@ -36,7 +36,11 @@ class ElifeApplication:
         create_daily_report_page(self.entry_dao, self.wellness_service)
         create_monthly_report_page(self.entry_dao)
 
-    def run(self, host: str = "0.0.0.0", port: int = 8080, reload: bool = False) -> None:
+    def run(
+            self,
+            host: str = "0.0.0.0",
+            port: int = 8080,
+            reload: bool = False) -> None:
         """Run the NiceGUI application."""
         def _find_free_port() -> int:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

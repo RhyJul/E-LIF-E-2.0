@@ -2,11 +2,14 @@ from typing import List, Optional
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 from sqlmodel import SQLModel, Field, Relationship
-# Use Python 3.11.15 for sqlmodel otherwise an error will occur when running the app.
+# Use Python 3.11.15 for sqlmodel otherwise an error will occur when
+# running the app.
+
 
 def swiss_time():
     """Return the current time in the Swiss timezone."""
     return datetime.now(ZoneInfo("Europe/Zurich"))
+
 
 class User(SQLModel, table=True):
     """Represents a registered user of the wellness tracker."""
@@ -16,6 +19,7 @@ class User(SQLModel, table=True):
     gender: str  # male / female
 
     daily_entries: List["DailyEntry"] = Relationship(back_populates="user")
+
 
 class DailyEntry(SQLModel, table=True):
     """Represents one day's worth of wellness data for a user."""
@@ -46,28 +50,34 @@ class DailyEntry(SQLModel, table=True):
     class Config:
         validate_assignment = True
 
+
 class Habit(SQLModel, table=True):
     """Represents a single habit observation linked to a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    daily_entry_id: Optional[int] = Field(
+        default=None, foreign_key="dailyentry.id")
     code: str          # e.g. "sleep", "stress", "water_intake"
     label: str         # human-readable name
     value_type: str    # "number" or "bool"
     value_number: Optional[float] = None
     value_bool: Optional[int] = None
 
+
 class WellnessLog(SQLModel, table=True):
     """Stores the calculated wellness score for a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    daily_entry_id: Optional[int] = Field(
+        default=None, foreign_key="dailyentry.id")
     score: int
     algorithm_version: str = Field(default="1.0")
     calculated_at: datetime = Field(default_factory=swiss_time)
 
+
 class Report(SQLModel, table=True):
     """Stores a generated wellness report for a daily entry."""
     id: Optional[int] = Field(default=None, primary_key=True)
-    daily_entry_id: Optional[int] = Field(default=None, foreign_key="dailyentry.id")
+    daily_entry_id: Optional[int] = Field(
+        default=None, foreign_key="dailyentry.id")
     report_type: str  # "daily", "weekly", "monthly"
     created_at: datetime = Field(default_factory=swiss_time)
     content: str = Field(default="")

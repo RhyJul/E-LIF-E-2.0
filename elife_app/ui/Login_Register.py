@@ -54,8 +54,8 @@ def create_login_page(user_dao) -> None:
 
                 ui.button('Login', on_click=login).classes(
                     'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
-                ui.button('Register', on_click=lambda: ui.navigate.to(
-                    '/register')).classes('w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                ui.button('Register', on_click=lambda: ui.navigate.to('/register')).classes(
+                    'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
 
     @ui.page('/register')
     def register_page() -> None:
@@ -89,15 +89,16 @@ def create_login_page(user_dao) -> None:
                     'Username').classes('w-full text-center py-3')
                 password_input = ui.input(
                     'Password', password=True).classes('w-full text-center py-3')
-                gender_input = ui.select(
-                    ['male', 'female'], label='Gender').classes('w-full text-center py-3')
+                gender_input = ui.select(['male', 'female'], label='Gender').classes(
+                    'w-full text-center py-3')
 
                 def register() -> None:
                     username = username_input.value
                     password = password_input.value
                     gender = gender_input.value
 
-                    if not username or not password or gender not in ('male', 'female'):
+                    if not username or not password or gender not in (
+                            'male', 'female'):
                         ui.notify('Please fill all fields correctly',
                                   color='negative')
                         return
@@ -114,7 +115,7 @@ def create_login_page(user_dao) -> None:
                     ui.notify('Account created!', color='positive')
                     ui.navigate.to('/')
 
-                ui.button('Create account',
-                          on_click=register).classes('w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                ui.button('Create account', on_click=register).classes(
+                    'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
                 ui.button('Back to login', on_click=lambda: ui.navigate.to(
                     '/')).classes('w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')

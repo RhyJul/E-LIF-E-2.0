@@ -4,7 +4,9 @@ from elife_app.domain.models import DailyEntry
 from elife_app.services.wellness_service import WellnessService
 
 
-def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
+def create_dashboard_page(
+        entry_dao,
+        wellness_service: WellnessService) -> None:
     """Register the /dashboard page with the daily check-in form."""
     @ui.page('/dashboard')
     def dashboard_page() -> None:
@@ -71,12 +73,18 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
             with ui.card().classes('bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm rounded-lg w-full max-w-6xl p-6'):
                 with ui.expansion('Start daily check-in', icon='edit_note').classes('w-full'):
                     with ui.column().classes('gap-4'):
-                        # Optional entry date at top — can be left empty to use today
+                        # Optional entry date at top — can be left empty to use
+                        # today
                         with ui.row().classes("gap-4 items-center"):
                             with ui.input(placeholder='31.01.2026') as date_input:
                                 with ui.menu() as menu:
-                                    ui.date(on_change=lambda e: (date_input.set_value(datetime.strptime(
-                                        e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), menu.close()))
+                                    ui.date(
+                                        on_change=lambda e: (
+                                            date_input.set_value(
+                                                datetime.strptime(
+                                                    e.value,
+                                                    '%Y-%m-%d').strftime('%d.%m.%Y')),
+                                            menu.close()))
                             ui.icon('calendar_month').classes(
                                 'cursor-pointer').on('click', menu.open)
 
@@ -93,12 +101,15 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                         ui.label('Mood (0-10)')
 
                         with ui.row().classes('w-full gap-4'):
-                            water = ui.number(label='Water intake (litres)',
-                                              min=0, max=5, value=1.5).classes('w-full')
-                            steps = ui.number(label='Step count', min=0,
-                                              max=50000, value=0).classes('w-full')
-                            work_hours = ui.number(label='Work hours', min=0,
-                                                   max=16, value=8).classes('w-full')
+                            water = ui.number(
+                                label='Water intake (litres)',
+                                min=0,
+                                max=5,
+                                value=1.5).classes('w-full')
+                            steps = ui.number(
+                                label='Step count', min=0, max=50000, value=0).classes('w-full')
+                            work_hours = ui.number(
+                                label='Work hours', min=0, max=16, value=8).classes('w-full')
 
                         with ui.row().classes('w-full gap-4 flex-wrap'):
                             friends = ui.checkbox('Did you see friends today?')
@@ -128,10 +139,10 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                                         ).classes('w-full text-slate-900')
 
                                         with ui.row().classes('w-full justify-end gap-2'):
-                                            ui.button(
-                                                'Save', on_click=period_dialog.close).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
-                                            ui.button(
-                                                'Close', on_click=period_dialog.close).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                                            ui.button('Save', on_click=period_dialog.close).classes(
+                                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                                            ui.button('Close', on_click=period_dialog.close).classes(
+                                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
 
                                 def on_period_change() -> None:
                                     if period.value:
@@ -145,7 +156,8 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                         def format_tip(tip: str) -> str:
                             if ':' in tip:
                                 label, rest = tip.split(':', 1)
-                                if label in {'Friends', 'Exercise', 'Hobbies', 'Meds'}:
+                                if label in {
+                                        'Friends', 'Exercise', 'Hobbies', 'Meds'}:
                                     return f"**{label}:** {rest.strip()}"
                             if tip.startswith('Hydrated queen!'):
                                 return f"**Hydrated queen!**{tip[len('Hydrated queen!'):]}"
@@ -163,7 +175,8 @@ def create_dashboard_page(entry_dao, wellness_service: WellnessService) -> None:
                                 period_flow_value = int(
                                     period_flow_input.value)
 
-                            # choose date: use provided date input if non-empty, otherwise today
+                            # choose date: use provided date input if
+                            # non-empty, otherwise today
                             if date_input.value:
                                 try:
                                     chosen_dt = datetime.strptime(

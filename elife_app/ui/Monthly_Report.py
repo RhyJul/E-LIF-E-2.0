@@ -41,7 +41,9 @@ def create_monthly_report_page(entry_dao: EntryDAO) -> None:
             avg_label = ui.label('')
             entries_container = ui.column().classes('w-full gap-2')
 
-            def format_advice_paragraphs(items: list[str], chunk_size: int = 3) -> str:
+            def format_advice_paragraphs(
+                    items: list[str],
+                    chunk_size: int = 3) -> str:
                 if not items:
                     return "No recommendations for this entry."
                 paragraphs = []

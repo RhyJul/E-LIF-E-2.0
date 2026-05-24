@@ -70,8 +70,8 @@ def create_daily_entry_page(database: Database | None = None) -> None:
 
         with ui.column().classes('w-full items-center gap-4 p-8 text-slate-900'):
 
-            ui.button('Back to dashboard',
-                      on_click=lambda: ui.navigate.to('/dashboard')).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
+            ui.button('Back to dashboard', on_click=lambda: ui.navigate.to('/dashboard')).classes(
+                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-3 py-1')
 
             entries_container = ui.column().classes('w-full gap-2')
             avg_label = ui.label('')
@@ -114,8 +114,13 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                             with ui.row().classes('gap-2 items-center'):
                                 with ui.input(value=entry.date.strftime('%d.%m.%Y')) as edit_date_input:
                                     with ui.menu() as edit_menu:
-                                        ui.date(on_change=lambda e: (edit_date_input.set_value(datetime.strptime(
-                                            e.value, '%Y-%m-%d').strftime('%d.%m.%Y')), edit_menu.close()))
+                                        ui.date(
+                                            on_change=lambda e: (
+                                                edit_date_input.set_value(
+                                                    datetime.strptime(
+                                                        e.value,
+                                                        '%Y-%m-%d').strftime('%d.%m.%Y')),
+                                                edit_menu.close()))
                                 ui.icon('calendar_month').classes(
                                     'cursor-pointer').on('click', edit_menu.open)
 
@@ -132,8 +137,9 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                             ui.label('Mood (0-10)')
 
                             with ui.row().classes('w-full gap-4'):
-                                water_edit = ui.number(label='Water intake (litres)', min=0, max=5, value=getattr(
-                                    entry, 'water_intake', 0.0)).classes('w-full')
+                                water_edit = ui.number(
+                                    label='Water intake (litres)', min=0, max=5, value=getattr(
+                                        entry, 'water_intake', 0.0)).classes('w-full')
                                 steps_edit = ui.number(
                                     label='Step count', min=0, max=50000, value=entry.steps).classes('w-full')
                                 work_edit = ui.number(
@@ -141,13 +147,16 @@ def create_daily_entry_page(database: Database | None = None) -> None:
 
                             with ui.row().classes('w-full gap-4 flex-wrap'):
                                 friends_edit = ui.checkbox(
-                                    'Did you see friends today?', value=bool(entry.friends))
+                                    'Did you see friends today?', value=bool(
+                                        entry.friends))
                                 exercise_edit = ui.checkbox(
                                     'Did you exercise today?', value=bool(entry.exercise))
                                 hobbies_edit = ui.checkbox(
-                                    'Did you do a hobby today?', value=bool(entry.hobbies))
+                                    'Did you do a hobby today?', value=bool(
+                                        entry.hobbies))
                                 meds_edit = ui.checkbox(
-                                    'Did you take your meds today?', value=bool(entry.meds))
+                                    'Did you take your meds today?', value=bool(
+                                        entry.meds))
                                 period_edit = None
                                 period_pain_edit = None
                                 period_flow_edit = None
@@ -195,16 +204,16 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                 with db.session_scope() as session:
                                     obj_check = session.get(
                                         DailyEntry, entry.id)
-                                    if obj_check is None or obj_check.user_id != int(user_id):
+                                    if obj_check is None or obj_check.user_id != int(
+                                            user_id):
                                         ui.notify(
                                             'Entry not found for this user', color='red')
                                         return
 
                                     stmt = (
-                                        select(DailyEntry)
-                                        .where(DailyEntry.user_id == int(user_id))
-                                        .where(DailyEntry.date == chosen)
-                                    )
+                                        select(DailyEntry) .where(
+                                            DailyEntry.user_id == int(user_id)) .where(
+                                            DailyEntry.date == chosen))
                                     existing = session.exec(stmt).first()
 
                                 if existing and existing.id != entry.id:
@@ -217,16 +226,16 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                             with db.session_scope() as s2:
                                                 obj2 = s2.get(
                                                     DailyEntry, entry.id)
-                                                if obj2 is None or obj2.user_id != int(user_id):
+                                                if obj2 is None or obj2.user_id != int(
+                                                        user_id):
                                                     ui.notify(
                                                         'Entry not found for this user', color='red')
                                                     return
 
                                                 stmt2 = (
-                                                    select(DailyEntry)
-                                                    .where(DailyEntry.user_id == int(user_id))
-                                                    .where(DailyEntry.date == chosen)
-                                                )
+                                                    select(DailyEntry) .where(
+                                                        DailyEntry.user_id == int(user_id)) .where(
+                                                        DailyEntry.date == chosen))
                                                 existing2 = s2.exec(
                                                     stmt2).first()
                                                 if existing2 and existing2.id != entry.id:
@@ -285,7 +294,8 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                 # no existing conflict — perform save
                                 with db.session_scope() as session:
                                     obj = session.get(DailyEntry, entry.id)
-                                    if obj is None or obj.user_id != int(user_id):
+                                    if obj is None or obj.user_id != int(
+                                            user_id):
                                         ui.notify(
                                             'Entry not found for this user', color='red')
                                         return
