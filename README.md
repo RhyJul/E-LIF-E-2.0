@@ -159,9 +159,9 @@ I want to have an own account so that it would be personalised to my lifestyle o
 - **Persistence:** SQLite + ORM + data access (DAO)  
 
 ### Design Decisions
-- MVC structure (Model–View–Controller)
-- Clear separation of concerns
-- Business logic independent of UI
+- Layered architecture inspired by MVC (Model, UI Views, and controller-like page handlers)
+- Partial separation of concerns via dedicated domain models, service logic, and DAO-based persistence
+- Core wellness scoring logic implemented UI-agnostically in the service layer, while some flow and formatting logic remains in UI modules
 
 ### Patterns Used
 - MVC  
