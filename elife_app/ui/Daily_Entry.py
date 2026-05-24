@@ -193,9 +193,11 @@ def create_daily_entry_page(database: Database | None = None) -> None:
 
                                 # check for existing entry on chosen date
                                 with db.session_scope() as session:
-                                    obj_check = session.get(DailyEntry, entry.id)
+                                    obj_check = session.get(
+                                        DailyEntry, entry.id)
                                     if obj_check is None or obj_check.user_id != int(user_id):
-                                        ui.notify('Entry not found for this user', color='red')
+                                        ui.notify(
+                                            'Entry not found for this user', color='red')
                                         return
 
                                     stmt = (
@@ -208,13 +210,16 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                 if existing and existing.id != entry.id:
                                     # ask user to confirm overwrite
                                     with ui.dialog() as confirm_dialog:
-                                        ui.label('Another entry exists for that date. Overwrite it?')
+                                        ui.label(
+                                            'Another entry exists for that date. Overwrite it?')
 
                                         def do_overwrite() -> None:
                                             with db.session_scope() as s2:
-                                                obj2 = s2.get(DailyEntry, entry.id)
+                                                obj2 = s2.get(
+                                                    DailyEntry, entry.id)
                                                 if obj2 is None or obj2.user_id != int(user_id):
-                                                    ui.notify('Entry not found for this user', color='red')
+                                                    ui.notify(
+                                                        'Entry not found for this user', color='red')
                                                     return
 
                                                 stmt2 = (
@@ -222,49 +227,67 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                                     .where(DailyEntry.user_id == int(user_id))
                                                     .where(DailyEntry.date == chosen)
                                                 )
-                                                existing2 = s2.exec(stmt2).first()
+                                                existing2 = s2.exec(
+                                                    stmt2).first()
                                                 if existing2 and existing2.id != entry.id:
                                                     s2.delete(existing2)
 
                                                 obj2.date = chosen
-                                                obj2.sleep_quality = int(sleep_edit.value)
-                                                obj2.stress = int(stress_edit.value)
-                                                obj2.mood = int(mood_edit.value)
-                                                obj2.steps = int(steps_edit.value)
-                                                obj2.work_hours = float(work_edit.value)
-                                                obj2.water_intake = float(water_edit.value)
-                                                obj2.friends = int(bool(friends_edit.value))
-                                                obj2.exercise = int(bool(exercise_edit.value))
-                                                obj2.hobbies = int(bool(hobbies_edit.value))
-                                                obj2.meds = int(bool(meds_edit.value))
+                                                obj2.sleep_quality = int(
+                                                    sleep_edit.value)
+                                                obj2.stress = int(
+                                                    stress_edit.value)
+                                                obj2.mood = int(
+                                                    mood_edit.value)
+                                                obj2.steps = int(
+                                                    steps_edit.value)
+                                                obj2.work_hours = float(
+                                                    work_edit.value)
+                                                obj2.water_intake = float(
+                                                    water_edit.value)
+                                                obj2.friends = int(
+                                                    bool(friends_edit.value))
+                                                obj2.exercise = int(
+                                                    bool(exercise_edit.value))
+                                                obj2.hobbies = int(
+                                                    bool(hobbies_edit.value))
+                                                obj2.meds = int(
+                                                    bool(meds_edit.value))
                                                 if is_female and period_edit is not None and period_edit.value:
                                                     obj2.period = 1
-                                                    obj2.period_pain = int(period_pain_edit.value) if period_pain_edit is not None else None
-                                                    obj2.period_flow = int(period_flow_edit.value) if period_flow_edit is not None else None
+                                                    obj2.period_pain = int(
+                                                        period_pain_edit.value) if period_pain_edit is not None else None
+                                                    obj2.period_flow = int(
+                                                        period_flow_edit.value) if period_flow_edit is not None else None
                                                 else:
                                                     obj2.period = 0
                                                     obj2.period_pain = None
                                                     obj2.period_flow = None
 
-                                                score, _ = wellness.calculate_score(obj2)
+                                                score, _ = wellness.calculate_score(
+                                                    obj2)
                                                 obj2.score = score
                                                 s2.add(obj2)
 
                                             confirm_dialog.close()
                                             card.remove()
                                             refresh()
-                                            ui.notify('Saved — existing entry for that date was overwritten', type='positive')
+                                            ui.notify(
+                                                'Saved — existing entry for that date was overwritten', type='positive')
 
                                         with ui.row().classes('w-full justify-end gap-2'):
-                                            ui.button('Overwrite', on_click=do_overwrite).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
-                                            ui.button('Cancel', on_click=confirm_dialog.close).classes('bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                                            ui.button('Overwrite', on_click=do_overwrite).classes(
+                                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
+                                            ui.button('Cancel', on_click=confirm_dialog.close).classes(
+                                                'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold')
                                     return
 
                                 # no existing conflict — perform save
                                 with db.session_scope() as session:
                                     obj = session.get(DailyEntry, entry.id)
                                     if obj is None or obj.user_id != int(user_id):
-                                        ui.notify('Entry not found for this user', color='red')
+                                        ui.notify(
+                                            'Entry not found for this user', color='red')
                                         return
 
                                     obj.date = chosen
@@ -275,13 +298,16 @@ def create_daily_entry_page(database: Database | None = None) -> None:
                                     obj.work_hours = float(work_edit.value)
                                     obj.water_intake = float(water_edit.value)
                                     obj.friends = int(bool(friends_edit.value))
-                                    obj.exercise = int(bool(exercise_edit.value))
+                                    obj.exercise = int(
+                                        bool(exercise_edit.value))
                                     obj.hobbies = int(bool(hobbies_edit.value))
                                     obj.meds = int(bool(meds_edit.value))
                                     if is_female and period_edit is not None and period_edit.value:
                                         obj.period = 1
-                                        obj.period_pain = int(period_pain_edit.value) if period_pain_edit is not None else None
-                                        obj.period_flow = int(period_flow_edit.value) if period_flow_edit is not None else None
+                                        obj.period_pain = int(
+                                            period_pain_edit.value) if period_pain_edit is not None else None
+                                        obj.period_flow = int(
+                                            period_flow_edit.value) if period_flow_edit is not None else None
                                     else:
                                         obj.period = 0
                                         obj.period_pain = None
