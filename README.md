@@ -1,6 +1,6 @@
 # E-LIF-E (Browser App)
 
-![UI Showcase](docs/ui-images/ui_showcase.png)
+![UI Showcase](docs/ui-images/ui_dashboard_screen.png)
 
 ---
 
@@ -129,7 +129,7 @@ I want to have an own account so that it would be personalised to my lifestyle o
 
 > 🚧 Add screenshots of the wireframe mockups you chose to implement.
 
-![Wireframes – Home/Transactions](docs/ui-images/wireframes.png)
+![Wireframes – Home/Transactions](docs/ui-images/ui_login_screen.png)(docs/ui-images/ui_dashboar_screen.png)(docs/ui-images/ui_daily_report_screen.png)(docs/ui-images/ui_manage_entry_screen.png)(docs/ui-images/ui_manage_entry_screen_part_2.png)(docs/ui-images/ui_monthly_report_screen.png)
 
 ---
 
